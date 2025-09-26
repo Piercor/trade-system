@@ -77,12 +77,41 @@ while (isRunning)
         Console.WriteLine("\n\nRegister a new account.\n");
 
         Console.Write("\nName: ");
-        string newName = Console.ReadLine();
+        string newName = Console.ReadLine().Trim();
+
+        if (name is valid)
+        {
+          be om email
+          if (email is valid)
+          {
+            be om lösen
+            if
+          }
+          else
+        }
+        else
+
+        if (string.IsNullOrEmpty(newName))
+        {
+          Console.Write("\nName can't be empty. PRess ENTER to continue. ");
+          Console.ReadLine();
+          currentMenu = Menu.None;
+          continue;
+        }
 
         Console.Write("\nEmail: ");
-        string newEmail = Console.ReadLine();
+        string newEmail = Console.ReadLine().Trim();
+
+        if (string.IsNullOrEmpty(newEmail))
+        {
+          Console.Write("\nEmail can't be empty. PRess ENTER to continue. ");
+          Console.ReadLine();
+          currentMenu = Menu.None;
+          continue;
+        }
+
         Console.Write("Repeat email: ");
-        string repEmail = Console.ReadLine();
+        string repEmail = Console.ReadLine().Trim();
 
         if (newEmail != repEmail)
         {
@@ -92,37 +121,68 @@ while (isRunning)
           currentMenu = Menu.None;
           continue;
         }
-        Console.Write("\nPassword: ");
-        string newPass = Console.ReadLine();
-        Console.Write("Repeat password: ");
-        string repPass = Console.ReadLine();
 
-        if (newPass != repPass)
+        bool new_user_already_exists = false;
+        foreach (User user in users)
         {
-          Console.WriteLine("\nPassword doesn't match.");
-          Console.Write("\nPress ENTER to continue: ");
-          Console.ReadLine();
-          currentMenu = Menu.None;
-          continue;
+          if (newEmail == user.Email)
+          {
+            Console.WriteLine("\nThere is another user already registered with that email.");
+            Console.Write("\nPress ENTER to continue. ");
+            Console.ReadLine();
+            currentMenu = Menu.None;
+            new_user_already_exists = true;
+            break;
+          }
         }
 
-        if (newEmail == newPass || newName == newPass)
+        if (!new_user_already_exists)
         {
-          Console.WriteLine("\nPassword can't be the same as name or email.");
-          Console.Write("\nPress ENTER to continue: ");
-          Console.ReadLine();
-          currentMenu = Menu.None;
-          continue;
-        }
+          Console.Write("\nPassword: ");
+          string newPass = Console.ReadLine().Trim();
 
-        if (newEmail == repEmail && newPass == repPass)
-        {
-          users.Add(new User(newName, newEmail, newPass));
-          Console.WriteLine($"\nNew user created. Welcome {newName}!");
-          Console.Write("\nPress ENTER to continue. ");
-          Console.ReadLine();
-          currentMenu = Menu.None;
-          continue;
+          if (string.IsNullOrEmpty(newPass))
+          {
+            Console.Write("\nPassword can't be empty. PRess ENTER to continue. ");
+            Console.ReadLine();
+            currentMenu = Menu.None;
+
+          }
+          else
+          {
+            Console.Write("Repeat password: ");
+            string repPass = Console.ReadLine().Trim();
+
+            if (newPass != repPass)
+            {
+              Console.WriteLine("\nPassword doesn't match.");
+              Console.Write("\nPress ENTER to continue: ");
+              Console.ReadLine();
+              currentMenu = Menu.None;
+              continue;
+            }
+          }
+
+
+
+          if (newEmail == newPass || newName == newPass)
+          {
+            Console.WriteLine("\nPassword can't be the same as name or email.");
+            Console.Write("\nPress ENTER to continue: ");
+            Console.ReadLine();
+            currentMenu = Menu.None;
+            continue;
+          }
+
+          if (newEmail == repEmail && newPass == repPass)
+          {
+            users.Add(new User(newName, newEmail, newPass));
+            Console.WriteLine($"\nNew user created. Welcome {newName}!");
+            Console.Write("\nPress ENTER to continue. ");
+            Console.ReadLine();
+            currentMenu = Menu.None;
+            continue;
+          }
         }
         break;
     }
