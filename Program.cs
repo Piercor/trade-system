@@ -73,8 +73,57 @@ while (isRunning)
         continue;
 
       case Menu.Register:
-        Console.WriteLine("\nSoon.");
-        Console.ReadLine();
+        try { Console.Clear(); } catch { }
+        Console.WriteLine("\n\nRegister a new account.\n");
+
+        Console.Write("\nName: ");
+        string newName = Console.ReadLine();
+
+        Console.Write("\nEmail: ");
+        string newEmail = Console.ReadLine();
+        Console.Write("Repeat email: ");
+        string repEmail = Console.ReadLine();
+
+        if (newEmail != repEmail)
+        {
+          Console.WriteLine("\nEmail doesn't match.");
+          Console.Write("\nPress ENTER to continue: ");
+          Console.ReadLine();
+          currentMenu = Menu.None;
+          continue;
+        }
+        Console.Write("\nPassword: ");
+        string newPass = Console.ReadLine();
+        Console.Write("Repeat password: ");
+        string repPass = Console.ReadLine();
+
+        if (newPass != repPass)
+        {
+          Console.WriteLine("\nPassword doesn't match.");
+          Console.Write("\nPress ENTER to continue: ");
+          Console.ReadLine();
+          currentMenu = Menu.None;
+          continue;
+        }
+
+        if (newEmail == newPass || newName == newPass)
+        {
+          Console.WriteLine("\nPassword can't be the same as name or email.");
+          Console.Write("\nPress ENTER to continue: ");
+          Console.ReadLine();
+          currentMenu = Menu.None;
+          continue;
+        }
+
+        if (newEmail == repEmail && newPass == repPass)
+        {
+          users.Add(new User(newName, newEmail, newPass));
+          Console.WriteLine($"\nNew user created. Welcome {newName}!");
+          Console.Write("\nPress ENTER to continue. ");
+          Console.ReadLine();
+          currentMenu = Menu.None;
+          continue;
+        }
         break;
     }
   }
