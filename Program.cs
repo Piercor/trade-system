@@ -31,19 +31,20 @@ while (isRunning)
         {
           case "1":
             currentMenu = Menu.Login;
-            continue;
+            break;
           case "2":
             currentMenu = Menu.Register;
-            continue;
+            break;
           case "3":
             isRunning = false;
-            continue;
+            break;
 
           default:
             Console.Write("\nInvalid input. Press ENTER to continue. ");
             Console.ReadLine();
-            continue;
+            break;
         }
+        break;
 
       case Menu.Login:
 
@@ -70,7 +71,7 @@ while (isRunning)
           Console.ReadLine();
           currentMenu = Menu.None;
         }
-        continue;
+        break;
 
       case Menu.Register:
 
@@ -190,6 +191,6 @@ while (isRunning)
         }
         break;
     }
+    break;
   }
-  // break;
 }
