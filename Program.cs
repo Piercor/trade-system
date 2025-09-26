@@ -63,11 +63,13 @@ while (isRunning)
             break;
           }
         }
-
-        // Console.WriteLine($"\nNo users were found with the given email/password");
-        // Console.Write("\nPress ENTER to continue. ");
-        // Console.ReadLine();
-        // currentMenu = Menu.None;
+        if (activeUser == null)
+        {
+          Console.WriteLine($"\nNo users were found with the given email/password");
+          Console.Write("\nPress ENTER to continue. ");
+          Console.ReadLine();
+          currentMenu = Menu.None;
+        }
         continue;
 
       case Menu.Register:
