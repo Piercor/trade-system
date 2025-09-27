@@ -49,7 +49,8 @@ while (isRunning)
       case Menu.Login:
 
         try { Console.Clear(); } catch { }
-        Console.WriteLine("\n\nLog in\n\n");
+        Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
+        Console.WriteLine("\n--- Log in ---\n");
         Console.Write("\nEmail: ");
         string email = Console.ReadLine();
         Console.Write("\nPassword: ");
@@ -76,7 +77,8 @@ while (isRunning)
       case Menu.Register:
 
         try { Console.Clear(); } catch { }
-        Console.WriteLine("\n\nRegister a new account.\n");
+        Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
+        Console.WriteLine("\n--- Register a new account ---\n");
 
         Console.Write("\nName: ");
         string newName = Console.ReadLine().Trim();
@@ -186,7 +188,7 @@ while (isRunning)
 
         try { Console.Clear(); } catch { }
         Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
-        Console.WriteLine($"\nWelcome, {u.Name} \n");
+        Console.WriteLine($"\n--- Welcome, {u.Name} ---\n");
         Console.WriteLine("\n[1] My items.");
         Console.WriteLine("\n[2] See the market.");
         //  Console.WriteLine("Requests"); // should be inside "my items". add a notification if user got a new request
@@ -197,19 +199,49 @@ while (isRunning)
         switch (Console.ReadLine())
         {
           case "1":
+            currentMenu = Menu.Items;
             break;
 
           case "2":
+            currentMenu = Menu.Market;
             break;
 
           case "3":
+            currentMenu = Menu.History;
             break;
 
           case "4":
-            activeUser = null;
             currentMenu = Menu.None;
+            activeUser = null;
             break;
+
+          default:
+            Console.Write("\nInvalid input. Press ENTER to continue. ");
+            Console.ReadLine();
+            break;
+
         }
+        break;
+
+      case Menu.Items:
+        try { Console.Clear(); } catch { }
+        Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
+        Console.WriteLine("\n--- My items ---\n");
+
+        Console.ReadLine();
+        break;
+
+      case Menu.Market:
+        try { Console.Clear(); } catch { }
+        Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
+        Console.WriteLine("\n--- See the market ---\n");
+        break;
+
+
+      case Menu.History:
+        try { Console.Clear(); } catch { }
+        Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
+        Console.WriteLine("\n--- Trade history ---\n");
         break;
     }
   }
