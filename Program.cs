@@ -190,7 +190,7 @@ while (isRunning)
         Console.WriteLine("\n[1] My items.");
         Console.WriteLine("\n[2] See the market.");
         //  Console.WriteLine("Requests"); // should be inside "my items". add a notification if user got a new request
-        Console.WriteLine("\n[3] History.");
+        Console.WriteLine("\n[3] Trade history.");
         Console.WriteLine("\n[4] Logout.");
         Console.Write("\n\nSelect an option [1-4]: ");
 

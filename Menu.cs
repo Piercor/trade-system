@@ -7,4 +7,7 @@ enum Menu
   Login,
   Register,
   Main,
+  Items,
+  Market,
+  History,
 }
