@@ -1,5 +1,6 @@
 ﻿
 using System.ComponentModel;
+using System.Security.Cryptography;
 using App;
 
 List<User> users = new List<User>();
@@ -240,7 +241,6 @@ while (isRunning)
         switch (Console.ReadLine())
         {
           case "1":
-
             try { Console.Clear(); } catch { }
             Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
             Console.WriteLine("\n--- See my items ---\n");
@@ -254,7 +254,7 @@ while (isRunning)
                   foreach (Item item in itemList)
                   {
                     Console.WriteLine($"\n[{itemList.IndexOf(item) + 1}] - {item.Name}\n"
-                    + $"{item.Description} - {item.Owner}");
+                    + $"{item.Description}");
                   }
                 }
               }
@@ -264,7 +264,43 @@ while (isRunning)
               Console.WriteLine("\n\nNo items to show.");
             }
 
-            Console.Write("\n\nPress ENTER to continue. ");
+            Console.Write("\n\nPress ENTER to go back to previous menu. ");
+            Console.ReadLine();
+            break;
+
+          case "2":
+            try { Console.Clear(); } catch { }
+            Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
+            Console.WriteLine("\n--- Sell an item ---\n");
+
+            Console.WriteLine("\nWhat do you want to sell?");
+            Console.Write("\nName: ");
+            string newItem = Console.ReadLine();
+
+            if (newItem != null && newItem != "")
+            {
+              Console.WriteLine("\nGive a descripton:");
+              string newDescription = Console.ReadLine();
+
+              if (newDescription != null && newDescription != "")
+              {
+                if (!userItems.ContainsKey(u.Name))
+                {
+                  userItems.Add(u.Name, new List<Item>());
+                }
+                userItems[u.Name].Add(new Item(newItem, newDescription, u.Name));
+                Console.WriteLine($"\nYour new item '{newItem}' has been added!");
+              }
+              else
+              {
+                Console.WriteLine("\nItem's description can't be empty");
+              }
+            }
+            else
+            {
+              Console.WriteLine("\nItem's name can't be empty");
+            }
+            Console.Write("\n\nPress ENTER to go back to previous menu. ");
             Console.ReadLine();
             break;
 
