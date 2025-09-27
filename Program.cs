@@ -10,6 +10,7 @@ users.Add(new User("testuser2", "t@2", "pass"));
 Dictionary<string, List<Item>> userItems = new Dictionary<string, List<Item>>();
 
 userItems.Add("testuser1", new List<Item> { new Item("Pants", "Good condition", "testuser1") });
+userItems["testuser1"].Add(new Item("Shirt", "Needs love", "testuser1"));
 
 User activeUser = null;
 
@@ -240,7 +241,11 @@ while (isRunning)
         {
           case "1":
 
-            if (userItems.Count > 0)
+            try { Console.Clear(); } catch { }
+            Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
+            Console.WriteLine("\n--- See my items ---\n");
+
+            if (userItems.ContainsKey(u.Name))
             {
               foreach ((string user, List<Item> itemList) in userItems)
               {
@@ -252,16 +257,14 @@ while (isRunning)
                     + $"{item.Description} - {item.Owner}");
                   }
                 }
-
               }
             }
             else
             {
-              Console.WriteLine("\nNo items to show.");
-              Console.ReadLine();
+              Console.WriteLine("\n\nNo items to show.");
             }
 
-            Console.Write("\nPress ENTER to continue. ");
+            Console.Write("\n\nPress ENTER to continue. ");
             Console.ReadLine();
             break;
 
