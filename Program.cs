@@ -178,19 +178,39 @@ while (isRunning)
         }
     }
   }
-  else
+  else if (activeUser is User u)
   {
     switch (currentMenu)
     {
       case Menu.Main:
-        if (activeUser is User u)
+
+        try { Console.Clear(); } catch { }
+        Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
+        Console.WriteLine($"\nWelcome, {u.Name} \n");
+        Console.WriteLine("\n[1] My items.");
+        Console.WriteLine("\n[2] See the market.");
+        //  Console.WriteLine("Requests"); // should be inside "my items". add a notification if user got a new request
+        Console.WriteLine("\n[3] History.");
+        Console.WriteLine("\n[4] Logout.");
+        Console.Write("\n\nSelect an option [1-4]: ");
+
+        switch (Console.ReadLine())
         {
-          try { Console.Clear(); } catch { }
-          Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
-          Console.WriteLine($"\n\nWelcome, {u.Name} \n");
+          case "1":
+            break;
+
+          case "2":
+            break;
+
+          case "3":
+            break;
+
+          case "4":
+            activeUser = null;
+            currentMenu = Menu.None;
+            break;
         }
         break;
     }
-    break;
   }
 }
