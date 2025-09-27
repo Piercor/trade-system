@@ -7,6 +7,10 @@ List<User> users = new List<User>();
 users.Add(new User("testuser1", "t@1", "pass"));
 users.Add(new User("testuser2", "t@2", "pass"));
 
+Dictionary<string, List<Item>> userItems = new Dictionary<string, List<Item>>();
+
+userItems.Add("testuser1", new List<Item> { new Item("Pants", "Good condition", "testuser1") });
+
 User activeUser = null;
 
 bool isRunning = true;
@@ -234,6 +238,34 @@ while (isRunning)
 
         switch (Console.ReadLine())
         {
+          case "1":
+
+            if (userItems.Count > 0)
+            {
+              foreach ((string user, List<Item> itemList) in userItems)
+              {
+                if (user == u.Name)
+                {
+                  foreach (Item item in itemList)
+                  {
+                    Console.WriteLine($"\n[{itemList.IndexOf(item) + 1}] - {item.Name}\n"
+                    + $"{item.Description} - {item.Owner}");
+                  }
+                }
+
+              }
+            }
+            else
+            {
+              Console.WriteLine("\nNo items to show.");
+              Console.ReadLine();
+            }
+
+            Console.Write("\nPress ENTER to continue. ");
+            Console.ReadLine();
+            break;
+
+
           case "4":
             currentMenu = Menu.Main;
             break;
