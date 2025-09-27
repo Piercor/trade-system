@@ -191,7 +191,6 @@ while (isRunning)
         Console.WriteLine($"\n--- Welcome, {u.Name} ---\n");
         Console.WriteLine("\n[1] My items.");
         Console.WriteLine("\n[2] See the market.");
-        //  Console.WriteLine("Requests"); // should be inside "my items". add a notification if user got a new request
         Console.WriteLine("\n[3] Trade history.");
         Console.WriteLine("\n[4] Logout.");
         Console.Write("\n\nSelect an option [1-4]: ");
@@ -227,14 +226,47 @@ while (isRunning)
         try { Console.Clear(); } catch { }
         Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
         Console.WriteLine("\n--- My items ---\n");
+        Console.WriteLine("\n[1] See my items.");
+        Console.WriteLine("\n[2] Sell an item.");
+        Console.WriteLine("\n[3] Buy requests."); // if possible, add a notification when somebody wants to buy an item
+        Console.WriteLine("\n[4] Back to previous menu.");
+        Console.Write("\n\nSelect an option [1-4]: ");
 
-        Console.ReadLine();
+        switch (Console.ReadLine())
+        {
+          case "4":
+            currentMenu = Menu.Main;
+            break;
+
+          default:
+            Console.Write("\nInvalid input. Press ENTER to continue. ");
+            Console.ReadLine();
+            break;
+        }
+
         break;
 
       case Menu.Market:
         try { Console.Clear(); } catch { }
         Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
         Console.WriteLine("\n--- See the market ---\n");
+        Console.WriteLine("\n[1] Browse items.");
+        Console.WriteLine("\n[2] My requests."); // if possible, add notification when an trade have been aproved/denied.
+        Console.WriteLine("\n[3] Back to previous menu.");
+        Console.Write("\n\nSelect an option [1-3]: ");
+
+        switch (Console.ReadLine())
+        {
+          case "3":
+            currentMenu = Menu.Main;
+            break;
+
+          default:
+            Console.Write("\nInvalid input. Press ENTER to continue. ");
+            Console.ReadLine();
+            break;
+        }
+
         break;
 
 
@@ -242,6 +274,23 @@ while (isRunning)
         try { Console.Clear(); } catch { }
         Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
         Console.WriteLine("\n--- Trade history ---\n");
+        Console.WriteLine("[1] My items.");
+        Console.WriteLine("[2] Others items.");
+        Console.WriteLine("[3] Back to previous menu.");
+        Console.Write("\n\nSelect an option [1-3]: ");
+
+        switch (Console.ReadLine())
+        {
+          case "3":
+            currentMenu = Menu.Main;
+            break;
+
+          default:
+            Console.Write("\nInvalid input. Press ENTER to continue. ");
+            Console.ReadLine();
+            break;
+        }
+
         break;
     }
   }
