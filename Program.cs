@@ -23,48 +23,49 @@ Dictionary<string, List<Item>> userItems = new Dictionary<string, List<Item>>();
 userItems.Add("testuser1", new List<Item> { new Item("Pants", "Good condition", "testuser1") });
 userItems["testuser1"].Add(new Item("Shirt", "Needs love", "testuser1"));
 
-userItems.Add("alice", new List<Item>
+userItems.Add("Alice", new List<Item>
 {
     new Item("Dress", "Like new", "alice"),
     new Item("Coffee Maker", "Barely used", "alice"),
     new Item("Book: The Alchemist", "Worn cover, all pages intact", "alice")
 });
 
-userItems.Add("bob", new List<Item>
+userItems.Add("Bob", new List<Item>
 {
     new Item("Wireless Mouse", "Good condition", "bob"),
     new Item("Jeans", "Faded", "bob"),
     new Item("Toaster", "Works fine, minor scratches", "bob")
 });
 
-userItems.Add("carla", new List<Item>
+userItems.Add("Carla", new List<Item>
 {
     new Item("Yoga Mat", "Used, but clean", "carla"),
     new Item("Blouse", "Needs stitching", "carla"),
     new Item("Bluetooth Speaker", "Loud and clear", "carla")
 });
 
-userItems.Add("dan", new List<Item>
+userItems.Add("Dan", new List<Item>
 {
     new Item("Sweater", "Warm and cozy", "dan"),
     new Item("Board Game: Catan", "All pieces included", "dan"),
     new Item("Wrist Watch", "Battery needs replacement", "dan")
 });
 
-userItems.Add("eve", new List<Item>
+userItems.Add("Eve", new List<Item>
 {
     new Item("Skirt", "Vintage look", "eve"),
     new Item("Lamp", "Works perfectly", "eve"),
     new Item("Backpack", "Zipper broken", "eve")
 });
 
-userItems.Add("frank", new List<Item>
+userItems.Add("Frank", new List<Item>
 {
     new Item("T-Shirt", "Graphic faded", "frank"),
     new Item("Electric Kettle", "Almost new", "frank"),
     new Item("Book: 1984", "Great condition", "frank")
 });
 
+int totalItemCount = userItems.Values.Sum(list => list.Count);
 
 User activeUser = null;
 
@@ -377,6 +378,29 @@ while (isRunning)
 
         switch (Console.ReadLine())
         {
+          case "1":
+            try { Console.Clear(); } catch { }
+            Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
+            Console.WriteLine("\n--- Browse items ---\n");
+
+            foreach ((string key, List<Item> itemList) in userItems)
+            {
+              if (u.Name != key)
+              {
+                Console.WriteLine($"\nSeller: {string.Join(" | ", key)}");
+
+                foreach (Item item in itemList)
+                {
+                  Console.WriteLine($"\n[{itemList.IndexOf(item) + 1}] {item.Name}\n"
+                 + $"{item.Description}.");
+                }
+                Console.WriteLine("------------------------------");
+              }
+            }
+            Console.Write("\nPress ENTER to continue. ");
+            Console.ReadLine();
+            break;
+
           case "3":
             currentMenu = Menu.Main;
             break;
