@@ -3,12 +3,12 @@ namespace App;
 
 class Trade
 {
-  public Item Item;
-  public User Sender;
-  public User Receiver;
+  public string Item;
+  public string Sender;
+  public string Receiver;
   public Enum Status;
 
-  public Trade(Item i, User s, User r, Enum st)
+  public Trade(string i, string s, string r, Enum st)
   {
     Item = i;
     Sender = s;

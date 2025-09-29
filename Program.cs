@@ -18,6 +18,7 @@ users.Add(new User("Eve", "e@5", "pass"));
 users.Add(new User("Frank", "f@6", "pass"));
 
 Dictionary<string, List<Item>> userItems = new Dictionary<string, List<Item>>();
+Dictionary<string, List<Trade>> userTrades = new Dictionary<string, List<Trade>>();
 
 // test items
 
@@ -433,7 +434,43 @@ while (isRunning)
                       }
                     }
                     Console.Write("\nSelect item's index to send a buy request. ");
-                    Console.ReadLine();
+                    string choosedIndex = Console.ReadLine();
+                    int index = 0;
+
+                    if (choosedIndex != null && choosedIndex != "")
+                    {
+                      // foreach ((string key, List<Item> itemList) in userItems)
+                      foreach (Item item in userItems[choosedSeller])
+                      {
+                        if (int.TryParse(choosedIndex, out index) && index > 0 && index <= userItems[choosedSeller].Count)
+                        {
+                          if (index == userItems[choosedSeller].IndexOf(item) + 1)
+                          {
+                            if (!userTrades.ContainsKey(u.Name))
+                            {
+                              userTrades.Add(u.Name, new List<Trade>());
+                            }
+                            userTrades[u.Name].Add(new Trade(item.Name, item.Owner, u.Name, TradeStatus.Pending));
+                            Console.WriteLine($"\n\nRequest to buy {item.Name} sended to {item.Owner}");
+                            Console.Write("\n\nPress ENTER to continue. ");
+                            Console.ReadLine();
+                            break;
+                          }
+                        }
+                        else
+                        {
+                          Console.Write("\nIndex not found. Press ENTER to go back to previous menu. ");
+                          Console.ReadLine();
+                          break;
+                        }
+                      }
+                    }
+                    else
+                    {
+                      Console.Write("\nInvalid input. Press ENTER to continue. ");
+                      Console.ReadLine();
+                    }
+
                   }
                   else
                   {
