@@ -362,7 +362,7 @@ while (isRunning)
 
             try { Console.Clear(); } catch { }
             Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
-            Console.WriteLine("\n--- Buy requests ---\n");
+            Console.WriteLine("\n--- Buy requests ---");
 
             if (userTrades.Count > 0)
             {
@@ -372,9 +372,9 @@ while (isRunning)
                 {
                   if (trade.Sender == u.Name && trade.Status == TradeStatus.Pending)
                   {
-                    Console.WriteLine($"\nYou have a buy request for your item '{trade.Item}',\n"
+                    Console.WriteLine($"\n\nYou have a buy request for your item '{trade.Item}',\n"
                     + $"from {trade.Receiver}");
-                    Console.Write("\nDo you want to accept this trade? [Y/N]: ");
+                    Console.Write("\n\nDo you want to accept this trade? [Y/N]: ");
                     switch (Console.ReadLine().ToLower())
                     {
                       case "y":
@@ -389,9 +389,7 @@ while (isRunning)
                               {
                                 trade.Status = TradeStatus.Accepted;
                                 itemList.Remove(item);
-                                Console.WriteLine($"\nBuy request from {trade.Receiver} accepted!");
-                                Console.Write("\nPress ENTER to go back to previous menu. ");
-                                Console.ReadLine();
+                                Console.WriteLine($"\n\nBuy request from {trade.Receiver} accepted!");
                                 break;
                               }
                             }
@@ -401,9 +399,9 @@ while (isRunning)
 
                       case "n":
                         trade.Status = TradeStatus.Denied;
-                        Console.WriteLine($"\nBuy request from {trade.Receiver} denied.");
-                        Console.Write("\nPress ENTER to go back to previous menu. ");
-                        Console.ReadLine();
+                        Console.WriteLine($"\n\nBuy request from {trade.Receiver} denied.");
+                        // Console.Write("\nPress ENTER to go back to previous menu. ");
+                        // Console.ReadLine();
                         break;
 
                       default:
@@ -415,6 +413,7 @@ while (isRunning)
                   {
                     Console.Write("\nNo trade requests to show. Press ENTER to go back to previous menu. ");
                     Console.ReadLine();
+                    break;
                   }
                 }
 
@@ -424,7 +423,10 @@ while (isRunning)
             {
               Console.Write("\nNo trade requests to show. Press ENTER to go back to previous menu. ");
               Console.ReadLine();
+              break;
             }
+            Console.Write("\n\nPress ENTER to go back to continue. ");
+            Console.ReadLine();
             break;
 
           case "4": // back to previous menu
@@ -629,7 +631,39 @@ while (isRunning)
         switch (Console.ReadLine())
         {
           case "1": // trade history >> my items
+            try { Console.Clear(); } catch { }
+            Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
+            Console.WriteLine("\n--- My items ---\n");
 
+            if (userTrades.Count > 0)
+            {
+              foreach ((string tradeKey, List<Trade> tradeList) in userTrades)
+              {
+                foreach (Trade trade in tradeList)
+                {
+                  if (trade.Sender == u.Name && trade.Status == TradeStatus.Accepted || trade.Status == TradeStatus.Denied)
+                  {
+                    Console.WriteLine($"\n[{tradeList.IndexOf(trade) + 1}] '{trade.Item}',\n"
+                    + $"buyer: {trade.Receiver} - {(trade.Status == TradeStatus.Accepted ? "Accepted" : "Denied")}.");
+                  }
+                  else
+                  {
+                    Console.Write("\nNo transactions to show. Press ENTER to go back to previous menu. ");
+                    Console.ReadLine();
+
+                  }
+                  break;
+                }
+              }
+            }
+            else
+            {
+              Console.Write("\nNo transactions to show. Press ENTER to go back to previous menu. ");
+              Console.ReadLine();
+            }
+
+            Console.Write("\n\nPress ENTER to go back to previous menu. ");
+            Console.ReadLine();
             break;
 
           case "2": // trade history >> other's items
