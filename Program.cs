@@ -5,13 +5,66 @@ using App;
 
 List<User> users = new List<User>();
 
+// test users
+
 users.Add(new User("testuser1", "t@1", "pass"));
 users.Add(new User("testuser2", "t@2", "pass"));
+users.Add(new User("alice", "a@1", "pass"));
+users.Add(new User("bob", "b@2", "pass"));
+users.Add(new User("carla", "c@3", "pass"));
+users.Add(new User("dan", "d@4", "pass"));
+users.Add(new User("eve", "e@5", "pass"));
+users.Add(new User("frank", "f@6", "pass"));
 
 Dictionary<string, List<Item>> userItems = new Dictionary<string, List<Item>>();
 
+// test items
+
 userItems.Add("testuser1", new List<Item> { new Item("Pants", "Good condition", "testuser1") });
 userItems["testuser1"].Add(new Item("Shirt", "Needs love", "testuser1"));
+
+userItems.Add("alice", new List<Item>
+{
+    new Item("Dress", "Like new", "alice"),
+    new Item("Coffee Maker", "Barely used", "alice"),
+    new Item("Book: The Alchemist", "Worn cover, all pages intact", "alice")
+});
+
+userItems.Add("bob", new List<Item>
+{
+    new Item("Wireless Mouse", "Good condition", "bob"),
+    new Item("Jeans", "Faded", "bob"),
+    new Item("Toaster", "Works fine, minor scratches", "bob")
+});
+
+userItems.Add("carla", new List<Item>
+{
+    new Item("Yoga Mat", "Used, but clean", "carla"),
+    new Item("Blouse", "Needs stitching", "carla"),
+    new Item("Bluetooth Speaker", "Loud and clear", "carla")
+});
+
+userItems.Add("dan", new List<Item>
+{
+    new Item("Sweater", "Warm and cozy", "dan"),
+    new Item("Board Game: Catan", "All pieces included", "dan"),
+    new Item("Wrist Watch", "Battery needs replacement", "dan")
+});
+
+userItems.Add("eve", new List<Item>
+{
+    new Item("Skirt", "Vintage look", "eve"),
+    new Item("Lamp", "Works perfectly", "eve"),
+    new Item("Backpack", "Zipper broken", "eve")
+});
+
+userItems.Add("frank", new List<Item>
+{
+    new Item("T-Shirt", "Graphic faded", "frank"),
+    new Item("Electric Kettle", "Almost new", "frank"),
+    new Item("Book: 1984", "Great condition", "frank")
+});
+
 
 User activeUser = null;
 
@@ -224,7 +277,6 @@ while (isRunning)
             Console.Write("\nInvalid input. Press ENTER to continue. ");
             Console.ReadLine();
             break;
-
         }
         break;
 
@@ -263,7 +315,6 @@ while (isRunning)
             {
               Console.WriteLine("\n\nNo items to show.");
             }
-
             Console.Write("\n\nPress ENTER to go back to previous menu. ");
             Console.ReadLine();
             break;
@@ -304,7 +355,6 @@ while (isRunning)
             Console.ReadLine();
             break;
 
-
           case "4":
             currentMenu = Menu.Main;
             break;
@@ -314,7 +364,6 @@ while (isRunning)
             Console.ReadLine();
             break;
         }
-
         break;
 
       case Menu.Market:
@@ -337,9 +386,7 @@ while (isRunning)
             Console.ReadLine();
             break;
         }
-
         break;
-
 
       case Menu.History:
         try { Console.Clear(); } catch { }
@@ -361,7 +408,6 @@ while (isRunning)
             Console.ReadLine();
             break;
         }
-
         break;
     }
   }
