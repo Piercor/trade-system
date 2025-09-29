@@ -6,9 +6,9 @@ class Trade
   public string Item;
   public string Sender;
   public string Receiver;
-  public Enum Status;
+  public TradeStatus Status;
 
-  public Trade(string i, string s, string r, Enum st)
+  public Trade(string i, string s, string r, TradeStatus st)
   {
     Item = i;
     Sender = s;

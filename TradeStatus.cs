@@ -1,7 +1,7 @@
 
 namespace App;
 
-enum TradeStatus
+public enum TradeStatus
 {
   Pending,
   Accepted,

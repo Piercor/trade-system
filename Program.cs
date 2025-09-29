@@ -295,7 +295,7 @@ while (isRunning)
 
         switch (Console.ReadLine())
         {
-          case "1":
+          case "1": // my items >> see my items
             try { Console.Clear(); } catch { }
             Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
             Console.WriteLine("\n--- See my items ---\n");
@@ -322,7 +322,7 @@ while (isRunning)
             Console.ReadLine();
             break;
 
-          case "2":
+          case "2": // my items >> sell item
             try { Console.Clear(); } catch { }
             Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
             Console.WriteLine("\n--- Sell an item ---\n");
@@ -358,7 +358,11 @@ while (isRunning)
             Console.ReadLine();
             break;
 
-          case "4":
+          case "3": // my items >> buy request
+
+            break;
+
+          case "4": // back to previous menu
             currentMenu = Menu.Main;
             break;
 
@@ -380,7 +384,7 @@ while (isRunning)
 
         switch (Console.ReadLine())
         {
-          case "1":
+          case "1": // see the market >> browse
             try { Console.Clear(); } catch { }
             Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
             Console.WriteLine("\n--- Browse items ---\n");
@@ -439,7 +443,6 @@ while (isRunning)
 
                     if (choosedIndex != null && choosedIndex != "")
                     {
-                      // foreach ((string key, List<Item> itemList) in userItems)
                       foreach (Item item in userItems[choosedSeller])
                       {
                         if (int.TryParse(choosedIndex, out index) && index > 0 && index <= userItems[choosedSeller].Count)
@@ -490,6 +493,46 @@ while (isRunning)
                 break;
             }
 
+            break;
+
+          case "2": // see the market >> my requests 
+
+            try { Console.Clear(); } catch { }
+            Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
+            Console.WriteLine("\n--- My requests ---\n");
+
+            if (userTrades.ContainsKey(u.Name))
+            {
+              foreach ((string key, List<Trade> tradeList) in userTrades)
+              {
+                if (key == u.Name && tradeList.Count > 0)
+                {
+                  foreach (Trade trade in tradeList)
+                  {
+                    switch (trade.Status)
+                    {
+                      case TradeStatus.Pending:
+                        Console.WriteLine($"\n{trade.Item} - sold by: {trade.Sender} - Pending...");
+                        break;
+
+                      case TradeStatus.Accepted:
+                        Console.WriteLine($"\n{trade.Item} - sold by: {trade.Sender} - Accepted!");
+                        break;
+
+                      case TradeStatus.Denied:
+                        Console.WriteLine($"\n{trade.Item} - sold by: {trade.Sender} - Denied :(");
+                        break;
+                    }
+                  }
+                }
+              }
+            }
+            else
+            {
+              Console.WriteLine("\nYou have no buying request pending.");
+            }
+            Console.Write("\nPress ENTER to go back to previous menu. ");
+            Console.ReadLine();
             break;
 
           case "3":
