@@ -623,9 +623,9 @@ while (isRunning)
         try { Console.Clear(); } catch { }
         Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
         Console.WriteLine("\n--- Trade history ---\n");
-        Console.WriteLine("[1] My items.");
-        Console.WriteLine("[2] Other's items.");
-        Console.WriteLine("[3] Back to previous menu.");
+        Console.WriteLine("\n[1] My items.");
+        Console.WriteLine("\n[2] Other's items.");
+        Console.WriteLine("\n[3] Back to previous menu.");
         Console.Write("\n\nSelect an option [1-3]: ");
 
         switch (Console.ReadLine())
@@ -641,18 +641,13 @@ while (isRunning)
               {
                 foreach (Trade trade in tradeList)
                 {
-                  if (trade.Sender == u.Name)
+                  if (trade.Status == TradeStatus.Accepted || trade.Status == TradeStatus.Denied)
                   {
-                    if (trade.Status == TradeStatus.Accepted || trade.Status == TradeStatus.Denied)
+                    if (trade.Sender == u.Name)
                     {
                       Console.WriteLine($"\n[{tradeList.IndexOf(trade) + 1}] '{trade.Item}',\n"
                     + $"buyer: {trade.Receiver} - {(trade.Status == TradeStatus.Accepted ? "Accepted" : "Denied")}.");
                     }
-                  }
-                  else
-                  {
-                    Console.Write("\nNo transactions to show. Press ENTER to go back to previous menu. ");
-                    Console.ReadLine();
                   }
                 }
               }
