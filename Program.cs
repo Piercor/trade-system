@@ -641,18 +641,19 @@ while (isRunning)
               {
                 foreach (Trade trade in tradeList)
                 {
-                  if (trade.Sender == u.Name && trade.Status == TradeStatus.Accepted || trade.Status == TradeStatus.Denied)
+                  if (trade.Sender == u.Name)
                   {
-                    Console.WriteLine($"\n[{tradeList.IndexOf(trade) + 1}] '{trade.Item}',\n"
+                    if (trade.Status == TradeStatus.Accepted || trade.Status == TradeStatus.Denied)
+                    {
+                      Console.WriteLine($"\n[{tradeList.IndexOf(trade) + 1}] '{trade.Item}',\n"
                     + $"buyer: {trade.Receiver} - {(trade.Status == TradeStatus.Accepted ? "Accepted" : "Denied")}.");
+                    }
                   }
                   else
                   {
                     Console.Write("\nNo transactions to show. Press ENTER to go back to previous menu. ");
                     Console.ReadLine();
-
                   }
-                  break;
                 }
               }
             }
