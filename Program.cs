@@ -1,5 +1,6 @@
 ﻿
 using System.ComponentModel;
+using System.Data;
 using System.Security.Cryptography;
 using App;
 
@@ -9,12 +10,12 @@ List<User> users = new List<User>();
 
 users.Add(new User("testuser1", "t@1", "pass"));
 users.Add(new User("testuser2", "t@2", "pass"));
-users.Add(new User("alice", "a@1", "pass"));
-users.Add(new User("bob", "b@2", "pass"));
-users.Add(new User("carla", "c@3", "pass"));
-users.Add(new User("dan", "d@4", "pass"));
-users.Add(new User("eve", "e@5", "pass"));
-users.Add(new User("frank", "f@6", "pass"));
+users.Add(new User("Alice", "a@1", "pass"));
+users.Add(new User("Bob", "b@2", "pass"));
+users.Add(new User("Carla", "c@3", "pass"));
+users.Add(new User("Dan", "d@4", "pass"));
+users.Add(new User("Eve", "e@5", "pass"));
+users.Add(new User("Frank", "f@6", "pass"));
 
 Dictionary<string, List<Item>> userItems = new Dictionary<string, List<Item>>();
 
@@ -25,44 +26,44 @@ userItems["testuser1"].Add(new Item("Shirt", "Needs love", "testuser1"));
 
 userItems.Add("Alice", new List<Item>
 {
-    new Item("Dress", "Like new", "alice"),
-    new Item("Coffee Maker", "Barely used", "alice"),
-    new Item("Book: The Alchemist", "Worn cover, all pages intact", "alice")
+    new Item("Dress", "Like new", "Alice"),
+    // new Item("Coffee Maker", "Barely used", "Alice"),
+    new Item("Book: The Alchemist", "Worn cover, all pages intact", "Alice")
 });
 
 userItems.Add("Bob", new List<Item>
 {
-    new Item("Wireless Mouse", "Good condition", "bob"),
-    new Item("Jeans", "Faded", "bob"),
-    new Item("Toaster", "Works fine, minor scratches", "bob")
+    new Item("Wireless Mouse", "Good condition", "Bob"),
+    // new Item("Jeans", "Faded", "bob"),
+    // new Item("Toaster", "Works fine, minor scratches", "Bob")
 });
 
 userItems.Add("Carla", new List<Item>
 {
-    new Item("Yoga Mat", "Used, but clean", "carla"),
-    new Item("Blouse", "Needs stitching", "carla"),
-    new Item("Bluetooth Speaker", "Loud and clear", "carla")
+    new Item("Yoga Mat", "Used, but clean", "Carla"),
+    new Item("Blouse", "Needs stitching", "Carla"),
+    new Item("Bluetooth Speaker", "Loud and clear", "Carla")
 });
 
 userItems.Add("Dan", new List<Item>
 {
-    new Item("Sweater", "Warm and cozy", "dan"),
-    new Item("Board Game: Catan", "All pieces included", "dan"),
-    new Item("Wrist Watch", "Battery needs replacement", "dan")
+    // new Item("Sweater", "Warm and cozy", "Dan"),
+    new Item("Board Game: Catan", "All pieces included", "Dan"),
+    new Item("Wrist Watch", "Battery needs replacement", "Dan")
 });
 
 userItems.Add("Eve", new List<Item>
 {
-    new Item("Skirt", "Vintage look", "eve"),
-    new Item("Lamp", "Works perfectly", "eve"),
-    new Item("Backpack", "Zipper broken", "eve")
+    // new Item("Skirt", "Vintage look", "Eve"),
+    // new Item("Lamp", "Works perfectly", "Eve"),
+    new Item("Backpack", "Zipper broken", "Eve")
 });
 
 userItems.Add("Frank", new List<Item>
 {
-    new Item("T-Shirt", "Graphic faded", "frank"),
-    new Item("Electric Kettle", "Almost new", "frank"),
-    new Item("Book: 1984", "Great condition", "frank")
+    // new Item("T-Shirt", "Graphic faded", "Frank"),
+    // new Item("Electric Kettle", "Almost new", "Frank"),
+    new Item("Book: 1984", "Great condition", "Frank")
 });
 
 int totalItemCount = userItems.Values.Sum(list => list.Count);
@@ -397,8 +398,61 @@ while (isRunning)
                 Console.WriteLine("------------------------------");
               }
             }
-            Console.Write("\nPress ENTER to continue. ");
-            Console.ReadLine();
+            Console.WriteLine("\n[1] Buy something.");
+            Console.WriteLine("[2] Back to previous menu.");
+            Console.Write("\nSelect an option [1-2]. ");
+            switch (Console.ReadLine())
+            {
+              case "1":
+                Console.WriteLine("\nWho do you want to buy from?\n");
+
+                foreach ((string key, List<Item> itemList) in userItems)
+                {
+                  Console.WriteLine(string.Join(" | ", key));
+                }
+
+                string choosedSeller = Console.ReadLine();
+
+                if (choosedSeller != null && choosedSeller != "")
+                {
+                  if (userItems.ContainsKey(choosedSeller))
+                  {
+                    try { Console.Clear(); } catch { }
+                    Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
+                    Console.WriteLine($"\n--- Buy something from {choosedSeller} ---\n");
+
+                    foreach ((string key, List<Item> itemList) in userItems)
+                    {
+                      if (choosedSeller == key)
+                      {
+                        foreach (Item item in itemList)
+                        {
+                          Console.WriteLine($"\n[{itemList.IndexOf(item) + 1}] {item.Name}\n"
+                          + $"{item.Description}.");
+                        }
+                      }
+                    }
+                    Console.Write("\nSelect item's index to send a buy request. ");
+                    Console.ReadLine();
+                  }
+                  else
+                  {
+                    Console.WriteLine($"\nNo users found by the name of {choosedSeller}");
+                  }
+                }
+                else
+                {
+                  Console.Write("\nInvalid input. Press ENTER to continue. ");
+                  Console.ReadLine();
+                }
+
+                break;
+
+              case "2":
+                currentMenu = Menu.Market;
+                break;
+            }
+
             break;
 
           case "3":
