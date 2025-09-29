@@ -360,6 +360,71 @@ while (isRunning)
 
           case "3": // my items >> buy request
 
+            try { Console.Clear(); } catch { }
+            Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
+            Console.WriteLine("\n--- Buy requests ---\n");
+
+            if (userTrades.Count > 0)
+            {
+              foreach ((string tradeKey, List<Trade> tradeList) in userTrades)
+              {
+                foreach (Trade trade in tradeList)
+                {
+                  if (trade.Sender == u.Name && trade.Status == TradeStatus.Pending)
+                  {
+                    Console.WriteLine($"\nYou have a buy request for your item '{trade.Item}',\n"
+                    + $"from {trade.Receiver}");
+                    Console.Write("\nDo you want to accept this trade? [Y/N]: ");
+                    switch (Console.ReadLine().ToLower())
+                    {
+                      case "y":
+
+                        foreach ((string itemKey, List<Item> itemList) in userItems)
+                        {
+                          if (itemList.Count > 0)
+                          {
+                            foreach (Item item in itemList)
+                            {
+                              if (itemKey == u.Name && item.Name == trade.Item)
+                              {
+                                trade.Status = TradeStatus.Accepted;
+                                itemList.Remove(item);
+                                Console.WriteLine($"\nBuy request from {trade.Receiver} accepted!");
+                                Console.Write("\nPress ENTER to go back to previous menu. ");
+                                Console.ReadLine();
+                                break;
+                              }
+                            }
+                          }
+                        }
+                        break;
+
+                      case "n":
+                        trade.Status = TradeStatus.Denied;
+                        Console.WriteLine($"\nBuy request from {trade.Receiver} denied.");
+                        Console.Write("\nPress ENTER to go back to previous menu. ");
+                        Console.ReadLine();
+                        break;
+
+                      default:
+                        Console.Write("\nInvalid input. Press ENTER to continue");
+                        break;
+                    }
+                  }
+                  else
+                  {
+                    Console.Write("\nNo trade requests to show. Press ENTER to go back to previous menu. ");
+                    Console.ReadLine();
+                  }
+                }
+
+              }
+            }
+            else
+            {
+              Console.Write("\nNo trade requests to show. Press ENTER to go back to previous menu. ");
+              Console.ReadLine();
+            }
             break;
 
           case "4": // back to previous menu
@@ -535,7 +600,7 @@ while (isRunning)
             Console.ReadLine();
             break;
 
-          case "3":
+          case "3": // back to menu
             currentMenu = Menu.Main;
             break;
 
@@ -557,7 +622,7 @@ while (isRunning)
 
         switch (Console.ReadLine())
         {
-          case "3":
+          case "3": // back to previous menu
             currentMenu = Menu.Main;
             break;
 
