@@ -130,7 +130,7 @@ while (isRunning)
         if (activeUser == null)
         {
           Console.WriteLine($"\nNo users were found with the given email/password");
-          Console.Write("\nPress ENTER to continue. ");
+          Console.Write("\nPress ENTER to go back to previous menu. ");
           Console.ReadLine();
           currentMenu = Menu.None;
         }
@@ -158,7 +158,7 @@ while (isRunning)
               if (newEmail == user.Email)
               {
                 Console.WriteLine("\nThere is another user already registered with that email.");
-                Console.Write("\nPress ENTER to continue. ");
+                Console.Write("\nPress ENTER to go back to previous menu. ");
                 Console.ReadLine();
                 existingUser = true;
                 currentMenu = Menu.None;
@@ -173,7 +173,7 @@ while (isRunning)
               if (newEmail != repEmail)
               {
                 Console.WriteLine("\nEmail doesn't match.");
-                Console.Write("\nPress ENTER to continue: ");
+                Console.Write("\nPress ENTER to go back to previous menu. ");
                 Console.ReadLine();
                 currentMenu = Menu.None;
                 break;
@@ -191,7 +191,7 @@ while (isRunning)
                   if (newPass != repPass)
                   {
                     Console.WriteLine("\nPassword doesn't match.");
-                    Console.Write("\nPress ENTER to continue: ");
+                    Console.Write("\nPress ENTER to go back to previous menu. ");
                     Console.ReadLine();
                     currentMenu = Menu.None;
                     break;
@@ -199,7 +199,7 @@ while (isRunning)
                   else if (newEmail == newPass || newName == newPass)
                   {
                     Console.WriteLine("\nPassword can't be the same as name or email.");
-                    Console.Write("\nPress ENTER to continue: ");
+                    Console.Write("\nPress ENTER to go back to previous menu. ");
                     Console.ReadLine();
                     currentMenu = Menu.None;
                     break;
@@ -216,7 +216,7 @@ while (isRunning)
                 }
                 else
                 {
-                  Console.Write("\nPassword can't be empty. Press ENTER to continue. ");
+                  Console.Write("\nPassword can't be empty. Press ENTER to go back to previous menu. ");
                   Console.ReadLine();
                   currentMenu = Menu.None;
                   break;
@@ -227,7 +227,7 @@ while (isRunning)
           }
           else
           {
-            Console.Write("\nEmail can't be empty. Press ENTER to continue. ");
+            Console.Write("\nEmail can't be empty. Press ENTER to go back to previous menu. ");
             Console.ReadLine();
             currentMenu = Menu.None;
           }
@@ -235,7 +235,7 @@ while (isRunning)
         }
         else
         {
-          Console.Write("\nName can't be empty. Press ENTER to continue. ");
+          Console.Write("\nName can't be empty. Press ENTER to go back to previous menu. ");
           Console.ReadLine();
           currentMenu = Menu.None;
           break;
@@ -277,7 +277,7 @@ while (isRunning)
             break;
 
           default:
-            Console.Write("\nInvalid input. Press ENTER to continue. ");
+            Console.Write("\nInvalid input. Press ENTER to go back to previous menu. ");
             Console.ReadLine();
             break;
         }
@@ -407,7 +407,7 @@ while (isRunning)
                         break;
 
                       default:
-                        Console.Write("\nInvalid input. Press ENTER to continue");
+                        Console.Write("\nInvalid input. Press ENTER to go back to previous menu. ");
                         break;
                     }
                   }
@@ -535,19 +535,21 @@ while (isRunning)
                     }
                     else
                     {
-                      Console.Write("\nInvalid input. Press ENTER to continue. ");
+                      Console.Write("\nInvalid input. Press ENTER to go back to previous menu. ");
                       Console.ReadLine();
                     }
 
                   }
                   else
                   {
-                    Console.WriteLine($"\nNo users found by the name of {choosedSeller}");
+                    Console.WriteLine($"\nNo users found by the name of '{choosedSeller}'.");
+                    Console.Write("\nPress ENTER to go back to previous menu. ");
+                    Console.ReadLine();
                   }
                 }
                 else
                 {
-                  Console.Write("\nInvalid input. Press ENTER to continue. ");
+                  Console.Write("\nInvalid input. Press ENTER to go back to previous menu. ");
                   Console.ReadLine();
                 }
 
@@ -556,8 +558,12 @@ while (isRunning)
               case "2":
                 currentMenu = Menu.Market;
                 break;
-            }
 
+              default:
+                Console.Write("\nInvalid input. Press ENTER to go back to previous menu. ");
+                Console.ReadLine();
+                break;
+            }
             break;
 
           case "2": // see the market >> my requests 
@@ -596,7 +602,7 @@ while (isRunning)
             {
               Console.WriteLine("\nYou have no buying request pending.");
             }
-            Console.Write("\nPress ENTER to go back to previous menu. ");
+            Console.Write("\n\nPress ENTER to go back to previous menu. ");
             Console.ReadLine();
             break;
 
@@ -605,7 +611,7 @@ while (isRunning)
             break;
 
           default:
-            Console.Write("\nInvalid input. Press ENTER to continue. ");
+            Console.Write("\nInvalid input. Press ENTER to go back to previous menu. ");
             Console.ReadLine();
             break;
         }
@@ -616,12 +622,20 @@ while (isRunning)
         Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
         Console.WriteLine("\n--- Trade history ---\n");
         Console.WriteLine("[1] My items.");
-        Console.WriteLine("[2] Others items.");
+        Console.WriteLine("[2] Other's items.");
         Console.WriteLine("[3] Back to previous menu.");
         Console.Write("\n\nSelect an option [1-3]: ");
 
         switch (Console.ReadLine())
         {
+          case "1": // trade history >> my items
+
+            break;
+
+          case "2": // trade history >> other's items
+
+            break;
+
           case "3": // back to previous menu
             currentMenu = Menu.Main;
             break;
