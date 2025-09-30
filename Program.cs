@@ -67,7 +67,7 @@ userItems.Add("Frank", new List<Item>
     new Item("Book: 1984", "Great condition", "Frank")
 });
 
-int totalItemCount = userItems.Values.Sum(list => list.Count);
+// int totalItemCount = userItems.Values.Sum(list => list.Count);
 
 User activeUser = null;
 
@@ -460,7 +460,7 @@ while (isRunning)
             {
               if (u.Name != key)
               {
-                Console.WriteLine($"\nSeller: {string.Join(" | ", key)}");
+                Console.WriteLine($"\nSeller: {key}");
 
                 foreach (Item item in itemList)
                 {
@@ -480,7 +480,7 @@ while (isRunning)
 
                 foreach ((string key, List<Item> itemList) in userItems)
                 {
-                  Console.WriteLine(string.Join(" | ", key));
+                  Console.Write($"{key} | ");
                 }
 
                 string choosedSeller = Console.ReadLine();
