@@ -544,16 +544,16 @@ while (isRunning)
                             {
                               userTrades[item.Owner].Add(u.Name, new List<Trade>());
                             }
-                            if (item.Interesed.Contains(u.Name))
+                            if (item.Interested.Contains(u.Name))
                             {
-                              Console.WriteLine("\nYou have sent a buy request already!");
+                              Console.WriteLine("\n\nYou have sent a buy request already!");
                               Console.Write("\n\nPress ENTER to go back to previous menu. ");
                               Console.ReadLine();
                             }
                             else
                             {
                               userTrades[item.Owner][u.Name].Add(new Trade(item.Name, item.Owner, u.Name, TradeStatus.Pending));
-                              item.Interesed.Add(u.Name);
+                              item.Interested.Add(u.Name);
                               Console.WriteLine($"\n\nRequest to buy {item.Name} sended to {item.Owner}");
                               Console.Write("\n\nPress ENTER to go back to previous menu. ");
                               Console.ReadLine();
