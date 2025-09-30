@@ -19,7 +19,7 @@ users.Add(new User("Eve", "e@5", "pass"));
 users.Add(new User("Frank", "f@6", "pass"));
 
 Dictionary<string, List<Item>> userItems = new Dictionary<string, List<Item>>();
-Dictionary<string, List<Trade>> userTrades = new Dictionary<string, List<Trade>>();
+Dictionary<string, Dictionary<string, List<Trade>>> userTrades = new Dictionary<string, Dictionary<string, List<Trade>>>();
 
 // test items
 
@@ -70,7 +70,7 @@ userItems.Add("Frank", new List<Item>
 
 // int totalItemCount = userItems.Values.Sum(list => list.Count);
 
-User activeUser = null;
+User? activeUser = null;
 
 bool isRunning = true;
 
@@ -373,70 +373,78 @@ while (isRunning)
 
             try { Console.Clear(); } catch { }
             Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
-            Console.WriteLine("\n--- Buy requests ---");
+            Console.WriteLine("\n--- Buy requests ---\n");
 
             if (userTrades.Count > 0)
             {
-              foreach ((string tradeKey, List<Trade> tradeList) in userTrades)
+              foreach ((string buyerKey, Dictionary<string, List<Trade>> sellerDict) in userTrades)
               {
-                foreach (Trade trade in tradeList)
+                foreach ((string sellerKey, List<Trade> tradeList) in sellerDict)
                 {
-                  if (trade.Sender == u.Name && trade.Status == TradeStatus.Pending)
+                  if (sellerKey == u.Name)
                   {
-                    Console.WriteLine($"\n\nYou have a buy request for your item '{trade.Item}',\n"
-                    + $"from {trade.Receiver}");
-                    Console.Write("\n\nDo you want to accept this trade? [Y/N]: ");
-                    switch (Console.ReadLine()?.ToLower())
+                    foreach (Trade trade in tradeList)
                     {
-                      case "y":
-
-                        foreach ((string itemKey, List<Item> itemList) in userItems)
+                      if (trade.Status == TradeStatus.Pending)
+                      {
+                        Console.WriteLine($"\nYou have a buy request for your item '{trade.Item}',\n"
+                        + $"from {trade.Receiver}");
+                        Console.Write("\n\nDo you want to accept this trade? [Y/N]: ");
+                        switch (Console.ReadLine()?.ToLower())
                         {
-                          if (itemList.Count > 0)
-                          {
-                            foreach (Item item in itemList)
+                          case "y":
+
+                            foreach ((string itemKey, List<Item> itemList) in userItems)
                             {
-                              if (itemKey == u.Name && item.Name == trade.Item)
+                              if (itemList.Count > 0)
                               {
-                                trade.Status = TradeStatus.Accepted;
-                                itemList.Remove(item);
-                                Console.WriteLine($"\n\nBuy request from {trade.Receiver} accepted!");
-                                break;
+                                foreach (Item item in itemList)
+                                {
+                                  if (itemKey == u.Name && item.Name == trade.Item)
+                                  {
+                                    trade.Status = TradeStatus.Accepted;
+                                    itemList.Remove(item);
+                                    Console.WriteLine($"\n\nBuy request from {trade.Receiver} accepted!");
+                                    break;
+                                  }
+                                }
                               }
                             }
-                          }
+                            break;
+
+                          case "n":
+                            trade.Status = TradeStatus.Denied;
+                            Console.WriteLine($"\n\nBuy request from {trade.Receiver} denied.");
+                            // Console.Write("\nPress ENTER to go back to previous menu. ");
+                            // Console.ReadLine();
+                            break;
+
+                          default:
+                            Console.Write("\nInvalid input. Press ENTER to go back to previous menu. ");
+                            break;
                         }
-                        break;
+                      }
 
-                      case "n":
-                        trade.Status = TradeStatus.Denied;
-                        Console.WriteLine($"\n\nBuy request from {trade.Receiver} denied.");
-                        // Console.Write("\nPress ENTER to go back to previous menu. ");
-                        // Console.ReadLine();
-                        break;
-
-                      default:
-                        Console.Write("\nInvalid input. Press ENTER to go back to previous menu. ");
-                        break;
                     }
                   }
                   else
                   {
-                    Console.Write("\nNo trade requests to show. Press ENTER to go back to previous menu. ");
-                    Console.ReadLine();
+                    Console.WriteLine("\nNo trade requests to show.");
+                    // Console.Write("\nNo trade requests to show. Press ENTER to go back to previous menu. ");
+                    // Console.ReadLine();
                     break;
                   }
                 }
-
               }
             }
             else
             {
-              Console.Write("\nNo trade requests to show. Press ENTER to go back to previous menu. ");
-              Console.ReadLine();
-              break;
+              Console.WriteLine("\nNo trade requests to show.");
+              // Console.Write("\nNo trade requests to show. Press ENTER to go back to previous menu. ");
+              // Console.ReadLine();
+              // break;
             }
-            Console.Write("\n\nPress ENTER to go back to continue. ");
+            Console.Write("\n\nPress ENTER to go back to previous menu. ");
             Console.ReadLine();
             break;
 
@@ -531,9 +539,13 @@ while (isRunning)
                           {
                             if (!userTrades.ContainsKey(u.Name))
                             {
-                              userTrades.Add(u.Name, new List<Trade>());
+                              userTrades.Add(u.Name, new Dictionary<string, List<Trade>>());
                             }
-                            userTrades[u.Name].Add(new Trade(item.Name, item.Owner, u.Name, TradeStatus.Pending));
+                            if (!userTrades[u.Name].ContainsKey(item.Owner))
+                            {
+                              userTrades[u.Name].Add(item.Owner, new List<Trade>());
+                            }
+                            userTrades[u.Name][item.Owner].Add(new Trade(item.Name, item.Owner, u.Name, TradeStatus.Pending));
                             Console.WriteLine($"\n\nRequest to buy {item.Name} sended to {item.Owner}");
                             Console.Write("\n\nPress ENTER to continue. ");
                             Console.ReadLine();
@@ -579,6 +591,7 @@ while (isRunning)
                 Console.ReadLine();
                 break;
             }
+
             break;
 
           case "2": // see the market >> my requests 
@@ -589,27 +602,31 @@ while (isRunning)
 
             if (userTrades.ContainsKey(u.Name))
             {
-              foreach ((string key, List<Trade> tradeList) in userTrades)
+              foreach ((string buyerKey, Dictionary<string, List<Trade>> sellerDict) in userTrades)
               {
-                if (key == u.Name && tradeList.Count > 0)
+                foreach ((string sellerKey, List<Trade> tradeList) in sellerDict)
                 {
-                  foreach (Trade trade in tradeList)
+                  if (buyerKey == u.Name && tradeList.Count > 0)
                   {
-                    switch (trade.Status)
+                    foreach (Trade trade in tradeList)
                     {
-                      case TradeStatus.Pending:
-                        Console.WriteLine($"\n{trade.Item} - sold by: {trade.Sender} - Pending...");
-                        break;
+                      switch (trade.Status)
+                      {
+                        case TradeStatus.Pending:
+                          Console.WriteLine($"\n{trade.Item} - sold by: {trade.Sender} - Pending...");
+                          break;
 
-                      case TradeStatus.Accepted:
-                        Console.WriteLine($"\n{trade.Item} - sold by: {trade.Sender} - Accepted!");
-                        break;
+                        case TradeStatus.Accepted:
+                          Console.WriteLine($"\n{trade.Item} - sold by: {trade.Sender} - Accepted!");
+                          break;
 
-                      case TradeStatus.Denied:
-                        Console.WriteLine($"\n{trade.Item} - sold by: {trade.Sender} - Denied :(");
-                        break;
+                        case TradeStatus.Denied:
+                          Console.WriteLine($"\n{trade.Item} - sold by: {trade.Sender} - Denied :(");
+                          break;
+                      }
                     }
                   }
+
                 }
               }
             }
@@ -650,18 +667,22 @@ while (isRunning)
 
             if (userTrades.Count > 0)
             {
-              foreach ((string tradeKey, List<Trade> tradeList) in userTrades)
+              foreach ((string buyerKey, Dictionary<string, List<Trade>> sellerDict) in userTrades)
               {
-                foreach (Trade trade in tradeList)
+                foreach ((string sellerKey, List<Trade> tradeList) in sellerDict)
                 {
-                  if (trade.Status == TradeStatus.Accepted || trade.Status == TradeStatus.Denied)
+                  foreach (Trade trade in tradeList)
                   {
-                    if (trade.Sender == u.Name)
+                    if (trade.Status == TradeStatus.Accepted || trade.Status == TradeStatus.Denied)
                     {
-                      Console.WriteLine($"\n[{tradeList.IndexOf(trade) + 1}] '{trade.Item}',\n"
-                    + $"buyer: {trade.Receiver} - {(trade.Status == TradeStatus.Accepted ? "Accepted" : "Denied")}.");
+                      if (trade.Sender == u.Name)
+                      {
+                        Console.WriteLine($"\n[{tradeList.IndexOf(trade) + 1}] '{trade.Item}',\n"
+                      + $"buyer: {trade.Receiver} - {(trade.Status == TradeStatus.Accepted ? "Accepted" : "Denied")}.");
+                      }
                     }
                   }
+
                 }
               }
             }
@@ -692,3 +713,6 @@ while (isRunning)
     }
   }
 }
+
+
+
