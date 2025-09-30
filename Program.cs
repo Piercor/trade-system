@@ -549,7 +549,8 @@ while (isRunning)
                             }
                             if (item.Interested.Contains(u.Name))
                             {
-                              Console.WriteLine("\n\nYou have sent a buy request already!");
+                              Console.WriteLine($"\n\nYou have already sent a buy request for {item.Owner}'s item:\n"
+                              + $"'{item.Name} - {item.Description}'");
                               Console.Write("\n\nPress ENTER to go back to previous menu. ");
                               Console.ReadLine();
                             }
