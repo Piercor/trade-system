@@ -23,42 +23,42 @@ Dictionary<string, Dictionary<string, List<Trade>>> userTrades = new Dictionary<
 
 // test items
 
-userItems.Add("testuser1", new List<Item> { new Item("Pants", "Good condition", "testuser1", new List<string>()) });
-userItems["testuser1"].Add(new Item("Shirt", "Needs love", "testuser1", new List<string>()));
+// userItems.Add("testuser1", new List<Item> { new Item("Pants", "Good condition", "testuser1", new List<string>()) });
+// userItems["testuser1"].Add(new Item("Shirt", "Needs love", "testuser1", new List<string>()));
 
-userItems.Add("Alice", new List<Item>
-{
-    new Item("Dress", "Like new", "Alice", new List<string>()),
-    new Item("Book: The Alchemist", "Worn cover, all pages intact", "Alice", new List<string>())
-});
+// userItems.Add("Alice", new List<Item>
+// {
+//     new Item("Dress", "Like new", "Alice", new List<string>()),
+//     new Item("Book: The Alchemist", "Worn cover, all pages intact", "Alice", new List<string>())
+// });
 
-userItems.Add("Bob", new List<Item>
-{
-    new Item("Wireless Mouse", "Good condition", "Bob", new List<string>())
-});
+// userItems.Add("Bob", new List<Item>
+// {
+//     new Item("Wireless Mouse", "Good condition", "Bob", new List<string>())
+// });
 
-userItems.Add("Carla", new List<Item>
-{
-    new Item("Yoga Mat", "Used, but clean", "Carla", new List<string>()),
-    new Item("Blouse", "Needs stitching", "Carla", new List<string>()),
-    new Item("Bluetooth Speaker", "Loud and clear", "Carla", new List<string>())
-});
+// userItems.Add("Carla", new List<Item>
+// {
+//     new Item("Yoga Mat", "Used, but clean", "Carla", new List<string>()),
+//     new Item("Blouse", "Needs stitching", "Carla", new List<string>()),
+//     new Item("Bluetooth Speaker", "Loud and clear", "Carla", new List<string>())
+// });
 
-userItems.Add("Dan", new List<Item>
-{
-       new Item("Board Game: Catan", "All pieces included", "Dan", new List<string>()),
-    new Item("Wrist Watch", "Battery needs replacement", "Dan", new List<string>())
-});
+// userItems.Add("Dan", new List<Item>
+// {
+//        new Item("Board Game: Catan", "All pieces included", "Dan", new List<string>()),
+//     new Item("Wrist Watch", "Battery needs replacement", "Dan", new List<string>())
+// });
 
-userItems.Add("Eve", new List<Item>
-{
-    new Item("Backpack", "Zipper broken", "Eve", new List<string>())
-});
+// userItems.Add("Eve", new List<Item>
+// {
+//     new Item("Backpack", "Zipper broken", "Eve", new List<string>())
+// });
 
-userItems.Add("Frank", new List<Item>
-{
-    new Item("Book: 1984", "Great condition", "Frank", new List<string>())
-});
+// userItems.Add("Frank", new List<Item>
+// {
+//     new Item("Book: 1984", "Great condition", "Frank", new List<string>())
+// });
 
 
 User? activeUser = null;
@@ -474,137 +474,144 @@ while (isRunning)
             Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
             Console.WriteLine("\n--- Browse items ---\n");
 
-            foreach ((string key, List<Item> itemList) in userItems)
+            if (userItems.Count > 0)
             {
-              if (u.Name != key)
+              foreach ((string key, List<Item> itemList) in userItems)
               {
-                Console.WriteLine($"\nSeller: {key}");
-
-                foreach (Item item in itemList)
+                if (u.Name != key)
                 {
-                  Console.WriteLine($"\n[{itemList.IndexOf(item) + 1}] {item.Name}\n"
-                 + $"{item.Description}.");
-                }
-                Console.WriteLine("------------------------------");
-              }
-            }
-            Console.WriteLine("\n[1] Buy something.");
-            Console.WriteLine("[2] Back to previous menu.");
-            Console.Write("\nSelect an option [1-2]. ");
-            switch (Console.ReadLine())
-            {
-              case "1":
-                Console.WriteLine("\n------------------------------\n");
+                  Console.WriteLine($"\nSeller: {key}");
 
-                foreach ((string key, List<Item> itemList) in userItems)
-                {
-                  if (key != u.Name)
+                  foreach (Item item in itemList)
                   {
-                    Console.Write($"{key} | ");
+                    Console.WriteLine($"\n[{itemList.IndexOf(item) + 1}] {item.Name}\n"
+                   + $"{item.Description}.");
                   }
+                  Console.WriteLine("------------------------------");
                 }
-                Console.Write("\n\nWrite the name of the seller you want to buy from: ");
-                string? choosedSeller = Console.ReadLine();
-                Debug.Assert(choosedSeller != null);
+              }
+              Console.WriteLine("\n[1] Buy something.");
+              Console.WriteLine("[2] Back to previous menu.");
+              Console.Write("\nSelect an option [1-2]. ");
+              switch (Console.ReadLine())
+              {
+                case "1":
+                  Console.WriteLine("\n------------------------------\n");
 
-                if (choosedSeller != null && choosedSeller != "")
-                {
-                  if (userItems.ContainsKey(choosedSeller))
+                  foreach ((string key, List<Item> itemList) in userItems)
                   {
-                    try { Console.Clear(); } catch { }
-                    Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
-                    Console.WriteLine($"\n--- Buy something from {choosedSeller} ---\n");
-
-                    foreach ((string key, List<Item> itemList) in userItems)
+                    if (key != u.Name)
                     {
-                      if (choosedSeller == key)
+                      Console.Write($"{key} | ");
+                    }
+                  }
+                  Console.Write("\n\nWrite the name of the seller you want to buy from: ");
+                  string? choosedSeller = Console.ReadLine();
+                  Debug.Assert(choosedSeller != null);
+
+                  if (choosedSeller != null && choosedSeller != "")
+                  {
+                    if (userItems.ContainsKey(choosedSeller))
+                    {
+                      try { Console.Clear(); } catch { }
+                      Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
+                      Console.WriteLine($"\n--- Buy something from {choosedSeller} ---\n");
+
+                      foreach ((string key, List<Item> itemList) in userItems)
                       {
-                        foreach (Item item in itemList)
+                        if (choosedSeller == key)
                         {
-                          Console.WriteLine($"\n[{itemList.IndexOf(item) + 1}] {item.Name}\n"
-                          + $"{item.Description}.");
+                          foreach (Item item in itemList)
+                          {
+                            Console.WriteLine($"\n[{itemList.IndexOf(item) + 1}] {item.Name}\n"
+                            + $"{item.Description}.");
+                          }
                         }
                       }
-                    }
-                    Console.Write("\nSelect item's index to send a buy request. ");
-                    string? choosedIndex = Console.ReadLine();
-                    Debug.Assert(choosedIndex != null);
-                    int index = 0;
+                      Console.Write("\nSelect item's index to send a buy request. ");
+                      string? choosedIndex = Console.ReadLine();
+                      Debug.Assert(choosedIndex != null);
+                      int index = 0;
 
-                    if (choosedIndex != null && choosedIndex != "")
-                    {
-                      foreach (Item item in userItems[choosedSeller])
+                      if (choosedIndex != null && choosedIndex != "")
                       {
-                        if (int.TryParse(choosedIndex, out index) && index > 0 && index <= userItems[choosedSeller].Count)
+                        foreach (Item item in userItems[choosedSeller])
                         {
-                          if (index == userItems[choosedSeller].IndexOf(item) + 1)
+                          if (int.TryParse(choosedIndex, out index) && index > 0 && index <= userItems[choosedSeller].Count)
                           {
-                            if (!userTrades.ContainsKey(item.Owner))
+                            if (index == userItems[choosedSeller].IndexOf(item) + 1)
                             {
-                              userTrades.Add(item.Owner, new Dictionary<string, List<Trade>>());
+                              if (!userTrades.ContainsKey(item.Owner))
+                              {
+                                userTrades.Add(item.Owner, new Dictionary<string, List<Trade>>());
+                              }
+                              if (!userTrades[item.Owner].ContainsKey(u.Name))
+                              {
+                                userTrades[item.Owner].Add(u.Name, new List<Trade>());
+                              }
+                              if (item.Interested.Contains(u.Name))
+                              {
+                                Console.WriteLine($"\n\nYou have already sent a buy request for {item.Owner}'s item:\n"
+                                + $"'{item.Name} - {item.Description}'");
+                                Console.Write("\n\nPress ENTER to go back to previous menu. ");
+                                Console.ReadLine();
+                              }
+                              else
+                              {
+                                userTrades[item.Owner][u.Name].Add(new Trade(item.Name, item.Owner, u.Name, TradeStatus.Pending));
+                                item.Interested.Add(u.Name);
+                                Console.WriteLine($"\n\nRequest to buy {item.Name} sended to {item.Owner}");
+                                Console.Write("\n\nPress ENTER to go back to previous menu. ");
+                                Console.ReadLine();
+                              }
+                              break;
                             }
-                            if (!userTrades[item.Owner].ContainsKey(u.Name))
-                            {
-                              userTrades[item.Owner].Add(u.Name, new List<Trade>());
-                            }
-                            if (item.Interested.Contains(u.Name))
-                            {
-                              Console.WriteLine($"\n\nYou have already sent a buy request for {item.Owner}'s item:\n"
-                              + $"'{item.Name} - {item.Description}'");
-                              Console.Write("\n\nPress ENTER to go back to previous menu. ");
-                              Console.ReadLine();
-                            }
-                            else
-                            {
-                              userTrades[item.Owner][u.Name].Add(new Trade(item.Name, item.Owner, u.Name, TradeStatus.Pending));
-                              item.Interested.Add(u.Name);
-                              Console.WriteLine($"\n\nRequest to buy {item.Name} sended to {item.Owner}");
-                              Console.Write("\n\nPress ENTER to go back to previous menu. ");
-                              Console.ReadLine();
-                            }
+                          }
+                          else
+                          {
+                            Console.Write("\nIndex not found. Press ENTER to go back to previous menu. ");
+                            Console.ReadLine();
                             break;
                           }
                         }
-                        else
-                        {
-                          Console.Write("\nIndex not found. Press ENTER to go back to previous menu. ");
-                          Console.ReadLine();
-                          break;
-                        }
                       }
+                      else
+                      {
+                        Console.Write("\nInvalid input. Press ENTER to go back to previous menu. ");
+                        Console.ReadLine();
+                      }
+
                     }
                     else
                     {
-                      Console.Write("\nInvalid input. Press ENTER to go back to previous menu. ");
+                      Console.WriteLine($"\nNo users found by the name of '{choosedSeller}'.");
+                      Console.Write("\nPress ENTER to go back to previous menu. ");
                       Console.ReadLine();
                     }
-
                   }
                   else
                   {
-                    Console.WriteLine($"\nNo users found by the name of '{choosedSeller}'.");
-                    Console.Write("\nPress ENTER to go back to previous menu. ");
+                    Console.Write("\nInvalid input. Press ENTER to go back to previous menu. ");
                     Console.ReadLine();
                   }
-                }
-                else
-                {
+
+                  break;
+
+                case "2":
+                  currentMenu = Menu.Market;
+                  break;
+
+                default:
                   Console.Write("\nInvalid input. Press ENTER to go back to previous menu. ");
                   Console.ReadLine();
-                }
-
-                break;
-
-              case "2":
-                currentMenu = Menu.Market;
-                break;
-
-              default:
-                Console.Write("\nInvalid input. Press ENTER to go back to previous menu. ");
-                Console.ReadLine();
-                break;
+                  break;
+              }
             }
-
+            else
+            {
+              Console.Write("\nNo items to show. Press ENTER to go back to previous menu. ");
+              Console.ReadLine();
+            }
             break;
 
           case "2": // see the market >> my requests 
