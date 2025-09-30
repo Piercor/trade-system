@@ -1,6 +1,7 @@
 ﻿
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Security.Cryptography;
 using App;
 
@@ -114,9 +115,12 @@ while (isRunning)
         Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
         Console.WriteLine("\n--- Log in ---\n");
         Console.Write("\nEmail: ");
-        string email = Console.ReadLine();
+        string? email = Console.ReadLine();
         Console.Write("\nPassword: ");
-        string password = Console.ReadLine();
+        string? password = Console.ReadLine();
+
+        Debug.Assert(email != null);
+        Debug.Assert(password != null);
 
         foreach (User user in users)
         {
@@ -143,12 +147,14 @@ while (isRunning)
         Console.WriteLine("\n--- Register a new account ---\n");
 
         Console.Write("\nName: ");
-        string newName = Console.ReadLine().Trim();
+        string? newName = Console.ReadLine()?.Trim();
+        Debug.Assert(newName != null);
 
         if (newName != null && newName != "")
         {
           Console.Write("\nEmail: ");
-          string newEmail = Console.ReadLine().Trim();
+          string? newEmail = Console.ReadLine()?.Trim();
+          Debug.Assert(newEmail != null);
 
           if (newEmail != null && newEmail != "")
           {
@@ -168,7 +174,8 @@ while (isRunning)
             if (!existingUser)
             {
               Console.Write("Repeat email: ");
-              string repEmail = Console.ReadLine().Trim();
+              string? repEmail = Console.ReadLine()?.Trim();
+              Debug.Assert(repEmail != null);
 
               if (newEmail != repEmail)
               {
@@ -181,12 +188,14 @@ while (isRunning)
               else
               {
                 Console.Write("\nPassword: ");
-                string newPass = Console.ReadLine().Trim();
+                string? newPass = Console.ReadLine()?.Trim();
+                Debug.Assert(newPass != null);
 
                 if (newPass != null && newPass != "")
                 {
                   Console.Write("Repeat password: ");
-                  string repPass = Console.ReadLine().Trim();
+                  string? repPass = Console.ReadLine()?.Trim();
+                  Debug.Assert(repPass != null);
 
                   if (newPass != repPass)
                   {
@@ -329,12 +338,14 @@ while (isRunning)
 
             Console.WriteLine("\nWhat do you want to sell?");
             Console.Write("\nName: ");
-            string newItem = Console.ReadLine();
+            string? newItem = Console.ReadLine();
+            Debug.Assert(newItem != null);
 
             if (newItem != null && newItem != "")
             {
               Console.WriteLine("\nGive a descripton:");
-              string newDescription = Console.ReadLine();
+              string? newDescription = Console.ReadLine();
+              Debug.Assert(newDescription != null);
 
               if (newDescription != null && newDescription != "")
               {
@@ -375,7 +386,7 @@ while (isRunning)
                     Console.WriteLine($"\n\nYou have a buy request for your item '{trade.Item}',\n"
                     + $"from {trade.Receiver}");
                     Console.Write("\n\nDo you want to accept this trade? [Y/N]: ");
-                    switch (Console.ReadLine().ToLower())
+                    switch (Console.ReadLine()?.ToLower())
                     {
                       case "y":
 
@@ -483,7 +494,8 @@ while (isRunning)
                   Console.Write($"{key} | ");
                 }
 
-                string choosedSeller = Console.ReadLine();
+                string? choosedSeller = Console.ReadLine();
+                Debug.Assert(choosedSeller != null);
 
                 if (choosedSeller != null && choosedSeller != "")
                 {
@@ -505,7 +517,8 @@ while (isRunning)
                       }
                     }
                     Console.Write("\nSelect item's index to send a buy request. ");
-                    string choosedIndex = Console.ReadLine();
+                    string? choosedIndex = Console.ReadLine();
+                    Debug.Assert(choosedIndex != null);
                     int index = 0;
 
                     if (choosedIndex != null && choosedIndex != "")
