@@ -494,13 +494,16 @@ while (isRunning)
             switch (Console.ReadLine())
             {
               case "1":
-                Console.WriteLine("\nWho do you want to buy from?\n");
+                Console.WriteLine("\n------------------------------\n");
 
                 foreach ((string key, List<Item> itemList) in userItems)
                 {
-                  Console.Write($"{key} | ");
+                  if (key != u.Name)
+                  {
+                    Console.Write($"{key} | ");
+                  }
                 }
-
+                Console.Write("\n\nWrite the name of the seller you want to buy from: ");
                 string? choosedSeller = Console.ReadLine();
                 Debug.Assert(choosedSeller != null);
 
