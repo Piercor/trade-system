@@ -6,11 +6,13 @@ class Item
   public string Name;
   public string Description;
   public string Owner;
+  public List<string> Interesed;
 
-  public Item(string n, string d, string o)
+  public Item(string n, string d, string o, List<string> i)
   {
     Name = n;
     Description = d;
     Owner = o;
+    Interesed = i;
   }
 }

@@ -23,52 +23,43 @@ Dictionary<string, Dictionary<string, List<Trade>>> userTrades = new Dictionary<
 
 // test items
 
-userItems.Add("testuser1", new List<Item> { new Item("Pants", "Good condition", "testuser1") });
-userItems["testuser1"].Add(new Item("Shirt", "Needs love", "testuser1"));
+userItems.Add("testuser1", new List<Item> { new Item("Pants", "Good condition", "testuser1", new List<string>()) });
+userItems["testuser1"].Add(new Item("Shirt", "Needs love", "testuser1", new List<string>()));
 
 userItems.Add("Alice", new List<Item>
 {
-    new Item("Dress", "Like new", "Alice"),
-    // new Item("Coffee Maker", "Barely used", "Alice"),
-    new Item("Book: The Alchemist", "Worn cover, all pages intact", "Alice")
+    new Item("Dress", "Like new", "Alice", new List<string>()),
+    new Item("Book: The Alchemist", "Worn cover, all pages intact", "Alice", new List<string>())
 });
 
 userItems.Add("Bob", new List<Item>
 {
-    new Item("Wireless Mouse", "Good condition", "Bob"),
-    // new Item("Jeans", "Faded", "bob"),
-    // new Item("Toaster", "Works fine, minor scratches", "Bob")
+    new Item("Wireless Mouse", "Good condition", "Bob", new List<string>())
 });
 
 userItems.Add("Carla", new List<Item>
 {
-    new Item("Yoga Mat", "Used, but clean", "Carla"),
-    new Item("Blouse", "Needs stitching", "Carla"),
-    new Item("Bluetooth Speaker", "Loud and clear", "Carla")
+    new Item("Yoga Mat", "Used, but clean", "Carla", new List<string>()),
+    new Item("Blouse", "Needs stitching", "Carla", new List<string>()),
+    new Item("Bluetooth Speaker", "Loud and clear", "Carla", new List<string>())
 });
 
 userItems.Add("Dan", new List<Item>
 {
-    // new Item("Sweater", "Warm and cozy", "Dan"),
-    new Item("Board Game: Catan", "All pieces included", "Dan"),
-    new Item("Wrist Watch", "Battery needs replacement", "Dan")
+       new Item("Board Game: Catan", "All pieces included", "Dan", new List<string>()),
+    new Item("Wrist Watch", "Battery needs replacement", "Dan", new List<string>())
 });
 
 userItems.Add("Eve", new List<Item>
 {
-    // new Item("Skirt", "Vintage look", "Eve"),
-    // new Item("Lamp", "Works perfectly", "Eve"),
-    new Item("Backpack", "Zipper broken", "Eve")
+    new Item("Backpack", "Zipper broken", "Eve", new List<string>())
 });
 
 userItems.Add("Frank", new List<Item>
 {
-    // new Item("T-Shirt", "Graphic faded", "Frank"),
-    // new Item("Electric Kettle", "Almost new", "Frank"),
-    new Item("Book: 1984", "Great condition", "Frank")
+    new Item("Book: 1984", "Great condition", "Frank", new List<string>())
 });
 
-// int totalItemCount = userItems.Values.Sum(list => list.Count);
 
 User? activeUser = null;
 
@@ -353,7 +344,7 @@ while (isRunning)
                 {
                   userItems.Add(u.Name, new List<Item>());
                 }
-                userItems[u.Name].Add(new Item(newItem, newDescription, u.Name));
+                userItems[u.Name].Add(new Item(newItem, newDescription, u.Name, new List<string>()));
                 Console.WriteLine($"\nYour new item '{newItem}' has been added!");
               }
               else
@@ -553,10 +544,20 @@ while (isRunning)
                             {
                               userTrades[item.Owner].Add(u.Name, new List<Trade>());
                             }
-                            userTrades[item.Owner][u.Name].Add(new Trade(item.Name, item.Owner, u.Name, TradeStatus.Pending));
-                            Console.WriteLine($"\n\nRequest to buy {item.Name} sended to {item.Owner}");
-                            Console.Write("\n\nPress ENTER to continue. ");
-                            Console.ReadLine();
+                            if (item.Interesed.Contains(u.Name))
+                            {
+                              Console.WriteLine("\nYou have sent a buy request already!");
+                              Console.Write("\n\nPress ENTER to go back to previous menu. ");
+                              Console.ReadLine();
+                            }
+                            else
+                            {
+                              userTrades[item.Owner][u.Name].Add(new Trade(item.Name, item.Owner, u.Name, TradeStatus.Pending));
+                              item.Interesed.Add(u.Name);
+                              Console.WriteLine($"\n\nRequest to buy {item.Name} sended to {item.Owner}");
+                              Console.Write("\n\nPress ENTER to go back to previous menu. ");
+                              Console.ReadLine();
+                            }
                             break;
                           }
                         }
