@@ -388,7 +388,7 @@ while (isRunning)
                       if (trade.Status == TradeStatus.Pending)
                       {
                         Console.WriteLine($"\nYou have a buy request for your item '{trade.Item}',\n"
-                        + $"from {trade.Receiver}");
+                        + $"from {trade.Buyer}");
                         Console.Write("\n\nDo you want to accept this trade? [Y/N]: ");
                         switch (Console.ReadLine()?.ToLower())
                         {
@@ -404,7 +404,7 @@ while (isRunning)
                                   {
                                     trade.Status = TradeStatus.Accepted;
                                     itemList.Remove(item);
-                                    Console.WriteLine($"\n\nBuy request from {trade.Receiver} accepted!");
+                                    Console.WriteLine($"\n\nBuy request from {trade.Buyer} accepted!");
                                     break;
                                   }
                                 }
@@ -414,7 +414,7 @@ while (isRunning)
 
                           case "n":
                             trade.Status = TradeStatus.Denied;
-                            Console.WriteLine($"\n\nBuy request from {trade.Receiver} denied.");
+                            Console.WriteLine($"\n\nBuy request from {trade.Buyer} denied.");
                             // Console.Write("\nPress ENTER to go back to previous menu. ");
                             // Console.ReadLine();
                             break;
@@ -613,15 +613,15 @@ while (isRunning)
                       switch (trade.Status)
                       {
                         case TradeStatus.Pending:
-                          Console.WriteLine($"\n{trade.Item} - sold by: {trade.Sender} - Pending...");
+                          Console.WriteLine($"\n{trade.Item} - sold by: {trade.Seller} - Pending...");
                           break;
 
                         case TradeStatus.Accepted:
-                          Console.WriteLine($"\n{trade.Item} - sold by: {trade.Sender} - Accepted!");
+                          Console.WriteLine($"\n{trade.Item} - sold by: {trade.Seller} - Accepted!");
                           break;
 
                         case TradeStatus.Denied:
-                          Console.WriteLine($"\n{trade.Item} - sold by: {trade.Sender} - Denied :(");
+                          Console.WriteLine($"\n{trade.Item} - sold by: {trade.Seller} - Denied :(");
                           break;
                       }
                     }
@@ -675,10 +675,10 @@ while (isRunning)
                   {
                     if (trade.Status == TradeStatus.Accepted || trade.Status == TradeStatus.Denied)
                     {
-                      if (trade.Sender == u.Name)
+                      if (trade.Seller == u.Name)
                       {
                         Console.WriteLine($"\n[{tradeList.IndexOf(trade) + 1}] '{trade.Item}',\n"
-                      + $"buyer: {trade.Receiver} - {(trade.Status == TradeStatus.Accepted ? "Accepted" : "Denied")}.");
+                      + $"buyer: {trade.Buyer} - {(trade.Status == TradeStatus.Accepted ? "Accepted" : "Denied")}.");
                       }
                     }
                   }
