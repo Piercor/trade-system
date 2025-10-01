@@ -55,10 +55,10 @@ Dictionary<string, Dictionary<string, List<Trade>>> userTrades = new Dictionary<
 //     new Item("Backpack", "Zipper broken", "Eve", new List<string>())
 // });
 
-// userItems.Add("Frank", new List<Item>
-// {
-//     new Item("Book: 1984", "Great condition", "Frank", new List<string>())
-// });
+userItems.Add("Frank", new List<Item>
+{
+    new Item("Book: 1984", "Great condition", "Frank", new List<string>())
+});
 
 
 User? activeUser = null;
@@ -366,6 +366,8 @@ while (isRunning)
             Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
             Console.WriteLine("\n--- Buy requests ---\n");
 
+            bool foundSeller = false;
+
             if (userTrades.Count > 0)
             {
               foreach ((string sellerKey, Dictionary<string, List<Trade>> buyerDict) in userTrades)
@@ -373,7 +375,7 @@ while (isRunning)
                 if (sellerKey == u.Name)
                 {
                   string soldItem = "";
-
+                  foundSeller = true;
                   foreach ((string buyerKey, List<Trade> tradeList) in buyerDict)
                   {
                     foreach (Trade trade in tradeList)
@@ -381,6 +383,7 @@ while (isRunning)
                       if (soldItem == trade.Item)
                       {
                         trade.Status = TradeStatus.Denied;
+                        break;
                       }
                       if (trade.Status == TradeStatus.Pending)
                       {
@@ -400,10 +403,9 @@ while (isRunning)
                                   if (itemKey == u.Name && item.Name == trade.Item)
                                   {
                                     trade.Status = TradeStatus.Accepted;
-                                    // trade.Sold = true;
+                                    soldItem = item.Name;
                                     itemList.Remove(item);
                                     Console.WriteLine($"\n\nBuy request from {trade.Buyer} accepted!");
-                                    soldItem = item.Name;
                                     break;
                                   }
                                 }
@@ -414,8 +416,6 @@ while (isRunning)
                           case "n":
                             trade.Status = TradeStatus.Denied;
                             Console.WriteLine($"\n\nBuy request from {trade.Buyer} denied.");
-                            // Console.Write("\nPress ENTER to go back to previous menu. ");
-                            // Console.ReadLine();
                             break;
 
                           default:
@@ -423,25 +423,27 @@ while (isRunning)
                             break;
                         }
                       }
-
+                      else
+                      {
+                        foundSeller = false;
+                      }
                     }
                   }
                 }
                 else
                 {
-                  Console.WriteLine("\nNo trade requests to show.");
-                  // Console.Write("\nNo trade requests to show. Press ENTER to go back to previous menu. ");
-                  // Console.ReadLine();
-                  break;
+                  foundSeller = false;
+
                 }
               }
             }
             else
             {
+              foundSeller = false;
+            }
+            if (!foundSeller)
+            {
               Console.WriteLine("\nNo trade requests to show.");
-              // Console.Write("\nNo trade requests to show. Press ENTER to go back to previous menu. ");
-              // Console.ReadLine();
-              // break;
             }
             Console.Write("\n\nPress ENTER to go back to previous menu. ");
             Console.ReadLine();
@@ -476,9 +478,10 @@ while (isRunning)
 
             if (userItems.Count > 0)
             {
+              int itemCount = 0;
               foreach ((string key, List<Item> itemList) in userItems)
               {
-                if (u.Name != key)
+                if (u.Name != key && itemList.Count > 0)
                 {
                   Console.WriteLine($"\nSeller: {key}");
 
@@ -486,9 +489,16 @@ while (isRunning)
                   {
                     Console.WriteLine($"\n[{itemList.IndexOf(item) + 1}] {item.Name}\n"
                    + $"{item.Description}.");
+                    itemCount++;
                   }
                   Console.WriteLine("------------------------------");
                 }
+              }
+              if (itemCount <= 0)
+              {
+                Console.Write("\nNo items to show. Press ENTER to go back to previous menu. ");
+                Console.ReadLine();
+                break;
               }
               Console.WriteLine("\n[1] Buy something.");
               Console.WriteLine("[2] Back to previous menu.");
@@ -500,7 +510,7 @@ while (isRunning)
 
                   foreach ((string key, List<Item> itemList) in userItems)
                   {
-                    if (key != u.Name)
+                    if (key != u.Name && itemList.Count > 0)
                     {
                       Console.Write($"{key} | ");
                     }
@@ -620,6 +630,8 @@ while (isRunning)
             Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
             Console.WriteLine("\n--- My requests ---\n");
 
+            bool noRequests = false;
+
             if (userTrades.Count > 0)
             {
               foreach ((string sellerKey, Dictionary<string, List<Trade>> buyerDict) in userTrades)
@@ -653,11 +665,15 @@ while (isRunning)
                 }
                 else
                 {
-                  Console.WriteLine("\nYou have no buying request pending.");
+                  noRequests = true;
                 }
               }
             }
             else
+            {
+              Console.WriteLine("\nYou have no buying request pending.");
+            }
+            if (noRequests)
             {
               Console.WriteLine("\nYou have no buying request pending.");
             }
@@ -692,30 +708,39 @@ while (isRunning)
             Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
             Console.WriteLine("\n--- My items ---\n");
 
+            bool emptyHistory = true;
+
             if (userTrades.Count > 0)
             {
-              foreach ((string sellerKey, Dictionary<string, List<Trade>> buyerDict) in userTrades)
+              if (userTrades.ContainsKey(u.Name))
               {
-                foreach ((string buyerKey, List<Trade> tradeList) in buyerDict)
+                foreach ((string sellerKey, Dictionary<string, List<Trade>> buyerDict) in userTrades)
                 {
-                  foreach (Trade trade in tradeList)
+                  foreach ((string buyerKey, List<Trade> tradeList) in buyerDict)
                   {
-                    if (trade.Status == TradeStatus.Accepted || trade.Status == TradeStatus.Denied)
+                    foreach (Trade trade in tradeList)
                     {
-                      if (trade.Seller == u.Name)
+                      if (trade.Status == TradeStatus.Accepted || trade.Status == TradeStatus.Denied)
                       {
-                        Console.WriteLine($"\n[{tradeList.IndexOf(trade) + 1}] '{trade.Item}',\n"
-                      + $"buyer: {trade.Buyer} - {(trade.Status == TradeStatus.Accepted ? "Accepted" : "Denied")}.");
+                        if (trade.Seller == u.Name)
+                        {
+                          Console.WriteLine($"\n• '{trade.Item}',\n"
+                        + $"buyer: {trade.Buyer} - {(trade.Status == TradeStatus.Accepted ? "Accepted" : "Denied")}.");
+                          emptyHistory = false;
+                        }
                       }
                     }
                   }
                 }
               }
+              else
+              {
+                emptyHistory = true;
+              }
             }
-            else
+            if (emptyHistory)
             {
-              Console.Write("\nNo transactions to show. Press ENTER to go back to previous menu. ");
-              Console.ReadLine();
+              Console.WriteLine("\nNo transactions to show.");
             }
 
             Console.Write("\n\nPress ENTER to go back to previous menu. ");
