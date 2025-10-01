@@ -215,6 +215,9 @@ while (isRunning)
                   else if (newEmail == repEmail && newPass == repPass)
                   {
                     users.Add(new User(newName, newEmail, newPass));
+                    string newUserLine = $"{newName},{newEmail},{newPass}";
+                    File.AppendAllText("users.csv", newUserLine + Environment.NewLine);
+
                     Console.WriteLine($"\nNew user created. Welcome {newName}!");
                     Console.Write("\nPress ENTER to continue. ");
                     Console.ReadLine();
