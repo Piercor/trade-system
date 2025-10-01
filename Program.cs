@@ -5,18 +5,26 @@ using System.Diagnostics;
 using System.Security.Cryptography;
 using App;
 
+string[] usersCsv = File.ReadAllLines("users.csv");
+
 List<User> users = new List<User>();
+
+foreach (string userData in usersCsv)
+{
+  string[] splitUserData = userData.Split(",");
+  users.Add(new User(splitUserData[0], splitUserData[1], splitUserData[2]));
+}
 
 // test users
 
-users.Add(new User("testuser1", "t@1", "pass"));
-users.Add(new User("testuser2", "t@2", "pass"));
-users.Add(new User("Alice", "a@1", "pass"));
-users.Add(new User("Bob", "b@2", "pass"));
-users.Add(new User("Carla", "c@3", "pass"));
-users.Add(new User("Dan", "d@4", "pass"));
-users.Add(new User("Eve", "e@5", "pass"));
-users.Add(new User("Frank", "f@6", "pass"));
+// users.Add(new User("testuser1", "t@1", "pass"));
+// users.Add(new User("testuser2", "t@2", "pass"));
+// users.Add(new User("Alice", "a@1", "pass"));
+// users.Add(new User("Bob", "b@2", "pass"));
+// users.Add(new User("Carla", "c@3", "pass"));
+// users.Add(new User("Dan", "d@4", "pass"));
+// users.Add(new User("Eve", "e@5", "pass"));
+// users.Add(new User("Frank", "f@6", "pass"));
 
 Dictionary<string, List<Item>> userItems = new Dictionary<string, List<Item>>();
 Dictionary<string, Dictionary<string, List<Trade>>> userTrades = new Dictionary<string, Dictionary<string, List<Trade>>>();
