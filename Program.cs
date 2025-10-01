@@ -705,32 +705,87 @@ while (isRunning)
         switch (Console.ReadLine())
         {
           case "1": // trade history >> my items
-            try { Console.Clear(); } catch { }
-            Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
-            Console.WriteLine("\n--- My items ---\n");
-
-            bool emptyHistory = true;
-
-            if (userTrades.Count > 0)
             {
-              if (userTrades.ContainsKey(u.Name))
+              try { Console.Clear(); } catch { }
+              Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
+              Console.WriteLine("\n--- My items ---\n");
+
+              bool emptyHistory = true;
+
+              if (userTrades.Count > 0)
               {
-                foreach ((string sellerKey, Dictionary<string, List<Trade>> buyerDict) in userTrades)
+                if (userTrades.ContainsKey(u.Name))
                 {
-                  foreach ((string buyerKey, List<Trade> tradeList) in buyerDict)
+                  foreach ((string sellerKey, Dictionary<string, List<Trade>> buyerDict) in userTrades)
                   {
-                    foreach (Trade trade in tradeList)
+                    foreach ((string buyerKey, List<Trade> tradeList) in buyerDict)
                     {
-                      if (trade.Status == TradeStatus.Accepted || trade.Status == TradeStatus.Denied)
+                      foreach (Trade trade in tradeList)
                       {
-                        if (trade.Seller == u.Name)
+                        if (trade.Status == TradeStatus.Accepted || trade.Status == TradeStatus.Denied)
                         {
-                          Console.WriteLine($"\n• '{trade.Item}',\n"
-                        + $"buyer: {trade.Buyer} - {(trade.Status == TradeStatus.Accepted ? "Accepted" : "Denied")}.");
-                          emptyHistory = false;
+                          if (trade.Seller == u.Name)
+                          {
+                            Console.WriteLine($"\n• '{trade.Item}',\n"
+                          + $"buyer: {trade.Buyer} - {(trade.Status == TradeStatus.Accepted ? "Accepted" : "Denied")}.");
+                            emptyHistory = false;
+                          }
                         }
                       }
                     }
+                  }
+                }
+                else
+                {
+                  emptyHistory = true;
+                }
+              }
+              else
+              {
+                emptyHistory = true;
+              }
+              if (emptyHistory)
+              {
+                Console.WriteLine("\nNo transactions to show.");
+              }
+              Console.Write("\n\nPress ENTER to go back to previous menu. ");
+              Console.ReadLine();
+              break;
+            }
+
+          case "2": // trade history >> other's items
+            {
+              try { Console.Clear(); } catch { }
+              Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
+              Console.WriteLine("\n--- Others items ---\n");
+
+              bool emptyHistory = true;
+
+              if (userTrades.Count > 0)
+              {
+                foreach ((string sellerKey, Dictionary<string, List<Trade>> buyerDict) in userTrades)
+                {
+                  if (buyerDict.ContainsKey(u.Name))
+                  {
+                    foreach ((string buyerKey, List<Trade> tradeList) in buyerDict)
+                    {
+                      foreach (Trade trade in tradeList)
+                      {
+                        if (trade.Status == TradeStatus.Accepted || trade.Status == TradeStatus.Denied)
+                        {
+                          if (u.Name == trade.Buyer)
+                          {
+                            Console.WriteLine($"\n• '{trade.Item}',\n"
+                              + $"seller: {trade.Seller} - {(trade.Status == TradeStatus.Accepted ? "Accepted" : "Denied")}.");
+                            emptyHistory = false;
+                          }
+                        }
+                      }
+                    }
+                  }
+                  else
+                  {
+                    emptyHistory = true;
                   }
                 }
               }
@@ -738,19 +793,14 @@ while (isRunning)
               {
                 emptyHistory = true;
               }
+              if (emptyHistory)
+              {
+                Console.WriteLine("\nNo transactions to show.");
+              }
+              Console.Write("\n\nPress ENTER to go back to previous menu. ");
+              Console.ReadLine();
+              break;
             }
-            if (emptyHistory)
-            {
-              Console.WriteLine("\nNo transactions to show.");
-            }
-
-            Console.Write("\n\nPress ENTER to go back to previous menu. ");
-            Console.ReadLine();
-            break;
-
-          case "2": // trade history >> other's items
-
-            break;
 
           case "3": // back to previous menu
             currentMenu = Menu.Main;
@@ -765,6 +815,3 @@ while (isRunning)
     }
   }
 }
-
-
-
