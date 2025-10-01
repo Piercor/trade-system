@@ -290,7 +290,7 @@ while (isRunning)
             break;
 
           default:
-            Console.Write("\nInvalid input. Press ENTER to go back to previous menu. ");
+            Console.Write("\nInvalid input. Press ENTER to continue. ");
             Console.ReadLine();
             break;
         }
@@ -601,19 +601,17 @@ while (isRunning)
                           else
                           {
                             foundSeller = false;
-                            break;
                           }
                         }
                         else
                         {
                           foundSeller = false;
-                          break;
                         }
                       }
                       else
                       {
                         foundSeller = false;
-                        break;
+
                       }
                     }
                   }
@@ -693,7 +691,7 @@ while (isRunning)
             }
             else
             {
-              Console.WriteLine("\nYou have no buying request pending.");
+              noRequests = true;
             }
             if (noRequests)
             {
@@ -708,7 +706,7 @@ while (isRunning)
             break;
 
           default:
-            Console.Write("\nInvalid input. Press ENTER to go back to previous menu. ");
+            Console.Write("\nInvalid input. Press ENTER to continue. ");
             Console.ReadLine();
             break;
         }
