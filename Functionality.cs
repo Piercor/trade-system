@@ -26,6 +26,24 @@ abstract class Functionality
     {
       Console.WriteLine($"\n[{i + 1}] {menuOptions[i]}");
     }
-    Console.WriteLine($"\n\nSelect an option [1-{menuOptions.Length}]");
+    Console.Write($"\n\nSelect an option [1-{menuOptions.Length}]: ");
+  }
+
+  public static void ErrorMsg(string cause, string action)
+  {
+    if (cause == "inv")
+    {
+      cause = "Invalid input";
+    }
+    if (action == "continue")
+    {
+      action = "cont";
+    }
+    else if (action == "prev")
+    {
+      action = "go back to previous menu";
+    }
+    Console.Write($"\n{cause}. Press ENTER to {action}. ");
+    Console.ReadLine();
   }
 }

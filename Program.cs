@@ -44,6 +44,27 @@ while (isRunning)
       case Menu.None:
         Functionality.TopMenu("none");
         Functionality.NewMenu(menuOptions: new[] { "Login", "Create account", "Quit" });
+
+        switch (Console.ReadLine())
+        {
+          case "1":
+
+            break;
+
+          case "2":
+
+            break;
+
+          case "3":
+
+            break;
+
+          default:
+            Functionality.ErrorMsg("inv", "cont");
+            break;
+
+        }
+
         break;
 
       case Menu.Login:
