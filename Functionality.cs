@@ -15,7 +15,7 @@ abstract class Functionality
     else
     {
       Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
-      Console.WriteLine($"---------- {inMenu} ----------");
+      Console.WriteLine($"----- {inMenu} -----");
     }
   }
 
@@ -29,10 +29,6 @@ abstract class Functionality
   }
   public static void ErrorMsg(string cause, string action)
   {
-    if (cause == "inv")
-    {
-      cause = "Invalid input";
-    }
     if (action == "continue")
     {
       action = "cont";
@@ -41,7 +37,18 @@ abstract class Functionality
     {
       action = "go back to previous menu";
     }
-    Console.Write($"\n{cause}. Press ENTER to {action}. ");
+    if (cause == "inv")
+    {
+      cause = "Invalid input";
+    }
+    else if (cause == "")
+    {
+      Console.Write($"\nPress ENTER to {action}. ");
+    }
+    else
+    {
+      Console.Write($"\n{cause}. Press ENTER to {action}. ");
+    }
     Console.ReadLine();
   }
 }

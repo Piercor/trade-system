@@ -62,15 +62,38 @@ while (isRunning)
           default:
             Functionality.ErrorMsg("inv", "cont");
             break;
-
         }
-
         break;
 
       case Menu.Login:
+
         Functionality.TopMenu("Login");
+
         Console.Write("\nEmail: ");
+        string? email = Console.ReadLine();
+
         Console.Write("\nPass: ");
+        string? pass = Console.ReadLine();
+
+        Debug.Assert(email != null);
+        Debug.Assert(pass != null);
+
+        foreach (User user in users)
+        {
+          if (user.Login(email, pass))
+          {
+            activeUser = user;
+            currentMenu = Menu.Main;
+            break;
+          }
+        }
+        if (activeUser == null)
+        {
+          Console.WriteLine("\n\nNo users were found with the given email and password.\n");
+          Functionality.ErrorMsg("", "prev");
+          currentMenu = Menu.None;
+        }
+
         break;
 
       case Menu.Register:
@@ -99,5 +122,4 @@ while (isRunning)
         break;
     }
   }
-  break;
 }
