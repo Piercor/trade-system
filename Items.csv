@@ -1,12 +1,12 @@
-Pants;Good condition;testuser1
-Shirt;Needs love;testuser1
-Dress;Like new;Alice
-Book: The Alchemist;Worn cover, all pages intact;Alice
-Wireless Mouse;Good condition;Bob
-Yoga Mat,Used, but clean,Carla
-Blouse,Needs stitching,Carla
-Bluetooth Speaker,Loud and clear,Carla
-Board Game: Catan,All pieces included,Dan
-Wrist Watch,Battery needs replacement,Dan
-Backpack,Zipper broken,Eve
-Book: 1984,Great condition,Frank
+Pants;Good condition;t@1
+Shirt;Needs love;t@1
+Dress;Like new;a@1
+Book: The Alchemist;Worn cover, all pages intact;a@1
+Wireless Mouse;Good condition;b@2
+Yoga Mat;Used, but clean;c@3
+Blouse;Needs stitching;c@3
+Bluetooth Speaker;Loud and clear;c@3
+Board Game: Catan;All pieces included;d@4
+Wrist Watch;Battery needs replacement;d@4
+Backpack;Zipper broken;e@5
+Book: 1984;Great condition;f@6

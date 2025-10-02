@@ -18,11 +18,10 @@ string[] itemsCsv = File.ReadAllLines("Items.csv");
 
 foreach (string itemData in itemsCsv)
 {
-
   string[] itemSplitData = itemData.Split(";");
   foreach (User user in users)
   {
-    if (user.Name == itemSplitData[2])
+    if (user.Email == itemSplitData[2])
     {
       userItems.Add(new Item(itemSplitData[0], itemSplitData[1], user));
       break;
