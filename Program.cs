@@ -11,6 +11,45 @@
 // users.Add(new User("Eve", "e@5", "pass"));
 // users.Add(new User("Frank", "f@6", "pass"));
 
+// test items
+
+// userItems.Add("testuser1", new List<Item> { new Item("Pants", "Good condition", "testuser1", new List<string>()) });
+// userItems["testuser1"].Add(new Item("Shirt", "Needs love", "testuser1", new List<string>()));
+
+// userItems.Add("Alice", new List<Item>
+// {
+//     new Item("Dress", "Like new", "Alice", new List<string>()),
+//     new Item("Book: The Alchemist", "Worn cover, all pages intact", "Alice", new List<string>())
+// });
+
+// userItems.Add("Bob", new List<Item>
+// {
+//     new Item("Wireless Mouse", "Good condition", "Bob", new List<string>())
+// });
+
+// userItems.Add("Carla", new List<Item>
+// {
+//     new Item("Yoga Mat", "Used, but clean", "Carla", new List<string>()),
+//     new Item("Blouse", "Needs stitching", "Carla", new List<string>()),
+//     new Item("Bluetooth Speaker", "Loud and clear", "Carla", new List<string>())
+// });
+
+// userItems.Add("Dan", new List<Item>
+// {
+//        new Item("Board Game: Catan", "All pieces included", "Dan", new List<string>()),
+//     new Item("Wrist Watch", "Battery needs replacement", "Dan", new List<string>())
+// });
+
+// userItems.Add("Eve", new List<Item>
+// {
+//     new Item("Backpack", "Zipper broken", "Eve", new List<string>())
+// });
+
+// userItems.Add("Frank", new List<Item>
+// {
+//     new Item("Book: 1984", "Great condition", "Frank", new List<string>())
+// });
+
 // -----------------------------------------------------------------------------------------------------------------------
 
 using System.ComponentModel;
@@ -30,46 +69,22 @@ foreach (string userData in usersCsv)
 }
 
 Dictionary<string, List<Item>> userItems = new Dictionary<string, List<Item>>();
+
+string[] itemsCsv = File.ReadAllLines("items.csv");
+
+foreach (string itemData in itemsCsv.Skip(1))
+{
+  string[] splitItemData = itemData.Split(",");
+
+  if (!userItems.ContainsKey(splitItemData[0]))
+  {
+    userItems.Add(splitItemData[0], new List<Item>());
+  }
+  userItems[splitItemData[0]].Add(new Item(splitItemData[1], splitItemData[2], splitItemData[3], splitItemData[4].Split(",").ToList()));
+}
+
 Dictionary<string, Dictionary<string, List<Trade>>> userTrades = new Dictionary<string, Dictionary<string, List<Trade>>>();
 
-// test items
-
-userItems.Add("testuser1", new List<Item> { new Item("Pants", "Good condition", "testuser1", new List<string>()) });
-userItems["testuser1"].Add(new Item("Shirt", "Needs love", "testuser1", new List<string>()));
-
-userItems.Add("Alice", new List<Item>
-{
-    new Item("Dress", "Like new", "Alice", new List<string>()),
-    new Item("Book: The Alchemist", "Worn cover, all pages intact", "Alice", new List<string>())
-});
-
-userItems.Add("Bob", new List<Item>
-{
-    new Item("Wireless Mouse", "Good condition", "Bob", new List<string>())
-});
-
-userItems.Add("Carla", new List<Item>
-{
-    new Item("Yoga Mat", "Used, but clean", "Carla", new List<string>()),
-    new Item("Blouse", "Needs stitching", "Carla", new List<string>()),
-    new Item("Bluetooth Speaker", "Loud and clear", "Carla", new List<string>())
-});
-
-userItems.Add("Dan", new List<Item>
-{
-       new Item("Board Game: Catan", "All pieces included", "Dan", new List<string>()),
-    new Item("Wrist Watch", "Battery needs replacement", "Dan", new List<string>())
-});
-
-userItems.Add("Eve", new List<Item>
-{
-    new Item("Backpack", "Zipper broken", "Eve", new List<string>())
-});
-
-userItems.Add("Frank", new List<Item>
-{
-    new Item("Book: 1984", "Great condition", "Frank", new List<string>())
-});
 
 User? activeUser = null;
 
