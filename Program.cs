@@ -14,21 +14,35 @@ foreach (string userData in userCsv)
 List<Item> userItems = new List<Item>();
 
 string[] itemsCsv = File.ReadAllLines("Items.csv");
+
+
 foreach (string itemData in itemsCsv)
 {
-  string[] itemSplitData = itemData.Split(",");
-  User? thisUser = null;
 
+  string[] itemSplitData = itemData.Split(";");
   foreach (User user in users)
   {
-    thisUser = user;
+    if (user.Name == itemSplitData[2])
+    {
+      userItems.Add(new Item(itemSplitData[0], itemSplitData[1], user));
+      break;
+    }
   }
-
-  Debug.Assert(thisUser != null);
-  userItems.Add(new Item(itemSplitData[0], itemSplitData[1], thisUser));
 }
 
 /* test code
+Console.WriteLine(userItems[0].Name);
+Console.WriteLine(userItems[0].Description);
+Console.WriteLine(userItems[0].Owner.Name);
+
+Console.WriteLine(userItems[1].Name);
+Console.WriteLine(userItems[1].Description);
+Console.WriteLine(userItems[1].Owner.Name);
+
+Console.WriteLine(userItems[2].Name);
+Console.WriteLine(userItems[2].Description);
+Console.WriteLine(userItems[2].Owner.Name);
+
 Console.WriteLine(userItems[3].Name);
 Console.WriteLine(userItems[3].Description);
 Console.WriteLine(userItems[3].Owner.Name);
