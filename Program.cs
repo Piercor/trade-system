@@ -42,7 +42,7 @@ while (isRunning)
     switch (currentMenu)
     {
       case Menu.None:
-
+        Functionality.TopMenu("none");
         break;
 
       case Menu.Login:
@@ -75,4 +75,5 @@ while (isRunning)
         break;
     }
   }
+  break;
 }
