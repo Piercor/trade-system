@@ -22,13 +22,10 @@ abstract class Functionality
 
   public static void NewMenu(string[] menuOptions)
   {
-    string menuChoice = "";
-
     for (int i = 0; i < menuOptions.Length; i++)
     {
-      menuChoice = $"\n[{i + 1}] {menuOptions[i]}";
-      Console.WriteLine(menuChoice);
+      Console.WriteLine($"\n[{i + 1}] {menuOptions[i]}");
     }
-    Console.WriteLine($"\nSelect an option [1-{menuOptions.Length}]");
+    Console.WriteLine($"\n\nSelect an option [1-{menuOptions.Length}]");
   }
 }
