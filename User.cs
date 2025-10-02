@@ -13,4 +13,9 @@ class User
     Email = e;
     _password = p;
   }
+
+  public bool Login(string email, string pass)
+  {
+    return email == Email && pass == _password;
+  }
 }

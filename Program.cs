@@ -48,15 +48,15 @@ while (isRunning)
         switch (Console.ReadLine())
         {
           case "1":
-
+            currentMenu = Menu.Login;
             break;
 
           case "2":
-
+            currentMenu = Menu.Register;
             break;
 
           case "3":
-
+            isRunning = false;
             break;
 
           default:
@@ -68,7 +68,9 @@ while (isRunning)
         break;
 
       case Menu.Login:
-
+        Functionality.TopMenu("Login");
+        Console.Write("\nEmail: ");
+        Console.Write("\nPass: ");
         break;
 
       case Menu.Register:

@@ -5,7 +5,6 @@ namespace App;
 
 abstract class Functionality
 {
-
   public static void TopMenu(string inMenu)
   {
     try { Console.Clear(); } catch { }
@@ -28,7 +27,6 @@ abstract class Functionality
     }
     Console.Write($"\n\nSelect an option [1-{menuOptions.Length}]: ");
   }
-
   public static void ErrorMsg(string cause, string action)
   {
     if (cause == "inv")
