@@ -43,6 +43,7 @@ while (isRunning)
     {
       case Menu.None:
         Functionality.TopMenu("none");
+        Functionality.NewMenu(menuOptions: new[] { "Login", "Create account", "Quit" });
         break;
 
       case Menu.Login:
