@@ -28,3 +28,51 @@ foreach (string itemData in itemsCsv)
     }
   }
 }
+
+User? activeUser = null;
+
+bool isRunning = true;
+
+Menu currentMenu = Menu.None;
+
+while (isRunning)
+{
+  if (activeUser == null)
+  {
+    switch (currentMenu)
+    {
+      case Menu.None:
+
+        break;
+
+      case Menu.Login:
+
+        break;
+
+      case Menu.Register:
+
+        break;
+    }
+  }
+  else if (activeUser is User u)
+  {
+    switch (currentMenu)
+    {
+      case Menu.Main:
+
+        break;
+
+      case Menu.Items:
+
+        break;
+
+      case Menu.Market:
+
+        break;
+
+      case Menu.History:
+
+        break;
+    }
+  }
+}
