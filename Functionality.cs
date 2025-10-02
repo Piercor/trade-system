@@ -5,17 +5,17 @@ namespace App;
 
 abstract class Functionality
 {
-  public static void TopMenu(string inMenu)
+  public static void TopMenu(string menuTitle)
   {
     try { Console.Clear(); } catch { }
-    if (inMenu == "none")
+    if (menuTitle == "none")
     {
       Console.WriteLine("\n\nWelcome to The Trader's Peninsula\n");
     }
     else
     {
       Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
-      Console.WriteLine($"----- {inMenu} -----");
+      Console.WriteLine($"----- {menuTitle} -----");
     }
   }
 
@@ -27,21 +27,27 @@ abstract class Functionality
     }
     Console.Write($"\n\nSelect an option [1-{menuOptions.Length}]: ");
   }
-  public static void ErrorMsg(string cause, string action)
+  public static void ErrorMsg(string msg, string cause, string action)
   {
-    if (action == "continue")
+    if (msg != "")
     {
-      action = "cont";
+      Console.WriteLine($"\n{msg}.");
+    }
+
+    if (action == "cont")
+    {
+      action = "continue";
     }
     else if (action == "prev")
     {
       action = "go back to previous menu";
     }
+
     if (cause == "inv")
     {
       cause = "Invalid input";
     }
-    else if (cause == "")
+    if (cause == "")
     {
       Console.Write($"\nPress ENTER to {action}. ");
     }
