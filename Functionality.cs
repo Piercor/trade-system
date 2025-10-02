@@ -10,12 +10,12 @@ abstract class Functionality
     try { Console.Clear(); } catch { }
     if (menuTitle == "none")
     {
-      Console.WriteLine("\n\nWelcome to The Trader's Peninsula\n");
+      Console.WriteLine("\n\n----- The Trader's Peninsula -----\n\n");
     }
     else
     {
       Console.WriteLine("\n\n----- The Trader's Peninsula -----\n");
-      Console.WriteLine($"----- {menuTitle} -----");
+      Console.WriteLine($"----- {menuTitle} -----\n");
     }
   }
 
@@ -23,15 +23,20 @@ abstract class Functionality
   {
     for (int i = 0; i < menuOptions.Length; i++)
     {
-      Console.WriteLine($"\n[{i + 1}] {menuOptions[i]}");
+      if (menuOptions[i].Trim() == "")
+      {
+        Console.WriteLine("\nMENU OPTIONS CAN'T BE EMPTY! PROGRAM WOULD FINISH NOW!");
+        Environment.Exit(0);
+      }
+      Console.WriteLine($"\n[{i + 1}] {menuOptions[i].Trim()}.");
     }
-    Console.Write($"\n\nSelect an option [1-{menuOptions.Length}]: ");
+    Console.Write($"\n\nSelect an option [{(menuOptions.Length > 1 ? "1-" + menuOptions.Length : menuOptions.Length)}]: ");
   }
   public static void ErrorMsg(string msg, string cause, string action)
   {
     if (msg != "")
     {
-      Console.WriteLine($"\n{msg}.");
+      Console.WriteLine($"\n\n{msg}.");
     }
 
     if (action == "cont")
@@ -53,7 +58,7 @@ abstract class Functionality
     }
     else
     {
-      Console.Write($"\n{cause}. Press ENTER to {action}. ");
+      Console.Write($"\n\n{cause}. Press ENTER to {action}. ");
     }
     Console.ReadLine();
   }

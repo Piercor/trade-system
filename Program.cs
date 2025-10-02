@@ -42,7 +42,7 @@ while (isRunning)
     switch (currentMenu)
     {
       case Menu.None:
-        Functionality.TopMenu("none");
+        Functionality.TopMenu("Welcome");
         Functionality.NewMenu(menuOptions: new[] { "Login", "Create account", "Quit" });
 
         switch (Console.ReadLine())
@@ -152,7 +152,7 @@ while (isRunning)
                   }
                   else
                   {
-                    Console.Write("\nRepeat password: ");
+                    Console.Write("Repeat password: ");
                     string? repPass = Console.ReadLine();
 
                     if (repPass != newPass)
@@ -194,7 +194,9 @@ while (isRunning)
     switch (currentMenu)
     {
       case Menu.Main:
-
+        Functionality.TopMenu($"Welcome, {u.Name}");
+        Functionality.NewMenu(menuOptions: new[] { "Test" });
+        Console.ReadLine();
         break;
 
       case Menu.Items:
