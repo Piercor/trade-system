@@ -13,10 +13,12 @@ class Item
     Description = d;
     Owner = o;
   }
-  public string ShowItems(string owner)
+  public string ShowItems(User user)
   {
-    if (owner == "me")
+    if (user == Owner)
     { return $"\n• {Name}\n{Description}"; }
-    else { return $"\n• {Name}\n{Description}\n{Owner.Name}"; }
+    else if (user != Owner)
+    { return $"{Name}\n  {Description}\n  Owner: {Owner.Name}"; }
+    else { return $"\nNo items found"; }
   }
 }

@@ -198,8 +198,7 @@ while (isRunning)
             currentMenu = Menu.Items; break;
 
           case "2": // see market
-
-            break;
+            currentMenu = Menu.Market; break;
 
           case "3": // trade history
 
@@ -224,7 +223,7 @@ while (isRunning)
             {
               if (item.Owner.Email == u.Email)
               {
-                Console.WriteLine(item.ShowItems("me"));
+                Console.WriteLine(item.ShowItems(u));
               }
             }
             Console.WriteLine();
@@ -281,7 +280,22 @@ while (isRunning)
         break;
 
       case Menu.Market:
+        Functionality.TopMenu("See the market");
+        Functionality.NewMenu(menuOptions: new[] { "See other people's items", "My trade request", "Back to previous menu" });
+        switch (Console.ReadLine())
+        {
+          case "1":
 
+            break;
+
+          case "2":
+
+            break;
+
+          case "3":
+
+            break;
+        }
         break;
 
       case Menu.History:
