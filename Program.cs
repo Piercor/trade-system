@@ -14,8 +14,6 @@ foreach (string userData in userCsv)
 List<Item> userItems = new List<Item>();
 
 string[] itemsCsv = File.ReadAllLines("Items.csv");
-
-
 foreach (string itemData in itemsCsv)
 {
   string[] itemSplitData = itemData.Split(";");
@@ -30,8 +28,6 @@ foreach (string itemData in itemsCsv)
 }
 
 List<Trade> userTrades = new List<Trade>();
-
-
 
 User? activeUser = null;
 
@@ -398,12 +394,18 @@ while (isRunning)
                       bool tradingMine = true;
                       while (tradingMine)
                       {
+                        string yesOrNo = "";
                         if (!alreadyTradingWithUser)
                         {
                           Console.Write($"\nDo you want to trade some of your items with {choosedTradeUser.Name}? [Y/N]: ");
+                          yesOrNo = Console.ReadLine()?.ToLower();
+                        }
+                        else
+                        {
+                          yesOrNo = "y";
                         }
 
-                        switch (Console.ReadLine().ToLower())
+                        switch (yesOrNo)
                         {
                           case "y":
 
@@ -430,6 +432,7 @@ while (isRunning)
                                     if (myItemIndex == userItems.IndexOf(item))
                                     {
                                       activeUserItem = item;
+                                      break;
                                     }
                                   }
                                 }
@@ -450,6 +453,9 @@ while (isRunning)
                                 tradeItems.Add(theirItem);
                                 tradeItems.Add(activeUserItem);
                                 userTrades.Add(new Trade(activeUser, choosedTradeUser, TradeStatus.Pending, tradeItems));
+
+                                Console.WriteLine($"{activeUser.Email} {choosedTradeUser.Email} {tradeItems}");
+                                Console.ReadLine();
                                 tradingMine = false;
                                 break;
 
@@ -465,7 +471,7 @@ while (isRunning)
                           default:
                             Functionality.PrintMessage("", "inv", "cont"); break;
                         }
-                        break;
+                        //break;
                       }
                       Console.Write("\nDo you want to do another trade? [Y/N]: ");
                       switch (Console.ReadLine().ToLower())
@@ -482,10 +488,9 @@ while (isRunning)
                   }
                   else { Functionality.PrintMessage("", "inv", "cont"); }
 
-                  Functionality.PrintMessage("", "", "prev");
                   break;
 
-                case "2": currentMenu = Menu.Market; break;
+                case "2": isTrading = false; currentMenu = Menu.Market; break;
 
                 default: Functionality.PrintMessage("", "inv", "cont"); break;
               }
