@@ -309,7 +309,32 @@ while (isRunning)
                 }
               }
             }
-            Functionality.PrintMessage("", "", "cont");
+
+
+
+            Functionality.NewMenu(menuOptions: new[] { "Send a trade request", "Back to previous menu" });
+
+            switch (Console.ReadLine())
+            {
+              case "1":
+                Console.Write("\nSelect an user index to make a trade request");
+                string? choosedUser = Console.ReadLine();
+
+                if (choosedUser != null & choosedUser != "")
+                {
+
+                }
+                else
+                {
+                  Functionality.PrintMessage("", "inv", "cont");
+                }
+
+                break;
+
+              case "2": currentMenu = Menu.Market; break;
+
+              default: Functionality.PrintMessage("", "inv", "cont"); break;
+            }
             break;
 
           case "2": //see market >> my trade request
