@@ -199,7 +199,7 @@ while (isRunning)
         switch (Console.ReadLine())
         {
           case "1": // my items
-
+            currentMenu = Menu.Items;
             break;
 
           case "2": // see market
@@ -216,16 +216,34 @@ while (isRunning)
             break;
 
           default:
-
+            Functionality.ErrorMsg("", "inv", "cont");
             break;
-
         }
 
 
         break;
 
       case Menu.Items:
+        Functionality.TopMenu("My items");
+        Functionality.NewMenu(menuOptions: new[] { "See my items", "Trade requests", "Back to previous menu" });
+        switch (Console.ReadLine())
+        {
+          case "1": // see my items
 
+            break;
+
+          case "2": // add items
+
+            break;
+
+          case "3": // 
+
+            break;
+
+          default:
+            Functionality.ErrorMsg("", "inv", "cont");
+            break;
+        }
         break;
 
       case Menu.Market:
