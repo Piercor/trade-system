@@ -163,7 +163,8 @@ while (isRunning)
                     }
                     else
                     {
-                      Debug.Assert(newName != null && newPass != null);
+                      Debug.Assert(newName != null);
+                      Debug.Assert(newPass != null);
                       users.Add(new User(newName, newEmail, newPass));
                       string newUserLine = $"{newName},{newEmail},{newPass}";
                       File.AppendAllText("Users.csv", newUserLine + Environment.NewLine);
@@ -228,16 +229,64 @@ while (isRunning)
         Functionality.NewMenu(menuOptions: new[] { "See my items", "Trade requests", "Back to previous menu" });
         switch (Console.ReadLine())
         {
-          case "1": // see my items
+          case "1": // my items >> see my items
+            Functionality.TopMenu("See my items");
+            foreach (Item item in userItems)
+            {
+              if (item.Owner.Email == u.Email)
+              {
+                Console.WriteLine(item.ShowItems("me"));
+              }
+            }
+            Console.WriteLine();
+            Functionality.NewMenu(menuOptions: new[] { "Add an item", "Back to previous menu" });
+            switch (Console.ReadLine())
+            {
+              case "1":
+                Functionality.TopMenu("Add an item");
+                Console.Write("\nItem's name: ");
+                string? newItemName = Console.ReadLine()?.Trim();
+
+                if (newItemName != null && newItemName != "")
+                {
+                  Console.Write("\nItem's description: ");
+                  string? newItemDescription = Console.ReadLine()?.Trim();
+                  if (newItemDescription != null && newItemDescription != "")
+                  {
+                    Debug.Assert(newItemName != null);
+                    Debug.Assert(newItemDescription != null);
+                    userItems.Add(new Item(newItemName, newItemDescription, u));
+                    string newItemLine = $"{newItemName};{newItemDescription};{u.Email}";
+                    File.AppendAllText("Items.csv", newItemLine + Environment.NewLine);
+                    Functionality.ErrorMsg($"New item '{newItemName}' sucessfully added", "", "prev");
+                  }
+                  else
+                  {
+                    Functionality.ErrorMsg("Item's description can't be empty", "", "prev");
+                  }
+                }
+                else
+                {
+                  Functionality.ErrorMsg("Item's name can't be empty", "", "prev");
+                }
+                break;
+
+              case "2":
+                currentMenu = Menu.Items;
+                break;
+
+              default:
+                Functionality.ErrorMsg("", "inv", "cont");
+                break;
+            }
+            break;
+
+          case "2": // my items >> trade request
 
             break;
 
-          case "2": // add items
-
-            break;
-
-          case "3": // 
-
+          case "3": // my items >> previous menu
+            currentMenu = Menu.Main;
             break;
 
           default:
