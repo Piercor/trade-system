@@ -29,6 +29,10 @@ foreach (string itemData in itemsCsv)
 
 List<Trade> userTrades = new List<Trade>();
 
+
+
+
+
 User? activeUser = null;
 
 bool isRunning = true;
