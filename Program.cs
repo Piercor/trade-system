@@ -31,6 +31,8 @@ foreach (string itemData in itemsCsv)
 
 List<Trade> userTrades = new List<Trade>();
 
+
+
 User? activeUser = null;
 
 bool isRunning = true;
@@ -447,7 +449,7 @@ while (isRunning)
                                 List<Item> tradeItems = new List<Item>();
                                 tradeItems.Add(theirItem);
                                 tradeItems.Add(activeUserItem);
-                                userTrades.Add(new Trade(activeUser, choosedTradeUser, tradeItems));
+                                userTrades.Add(new Trade(activeUser, choosedTradeUser, TradeStatus.Pending, tradeItems));
                                 tradingMine = false;
                                 break;
 
