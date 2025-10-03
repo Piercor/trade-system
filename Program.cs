@@ -284,17 +284,19 @@ while (isRunning)
         Functionality.NewMenu(menuOptions: new[] { "See other people's items", "My trade request", "Back to previous menu" });
         switch (Console.ReadLine())
         {
-          case "1":
+          case "1": // see market >> other people items
 
             break;
 
-          case "2":
+          case "2": //see market >> my trade request
 
             break;
 
-          case "3":
+          case "3": // see market >> back previous menu
+            currentMenu = Menu.Main; break;
 
-            break;
+          default: Functionality.PrintMessage("", "inv", "cont"); break;
+
         }
         break;
 
