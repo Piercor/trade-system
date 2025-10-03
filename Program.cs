@@ -285,7 +285,31 @@ while (isRunning)
         switch (Console.ReadLine())
         {
           case "1": // see market >> other people items
+            Functionality.TopMenu("See other people's items");
+            foreach (User user in users)
+            {
+              if (user != activeUser)
+              {
+                foreach (Item item in userItems)
+                {
+                  if (item.Owner.Email == user.Email)
+                  {
+                    Console.WriteLine($"\n[{users.IndexOf(user) + 1}] {user.Name}");
+                    break;
+                  }
+                }
 
+                foreach (Item item in userItems)
+                {
+                  if (item.Owner.Email == user.Email)
+                  {
+                    if (item.Name != "")
+                    { Console.WriteLine($"\n• " + item.ShowItems(u)); }
+                  }
+                }
+              }
+            }
+            Functionality.PrintMessage("", "", "cont");
             break;
 
           case "2": //see market >> my trade request
