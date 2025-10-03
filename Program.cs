@@ -195,8 +195,33 @@ while (isRunning)
     {
       case Menu.Main:
         Functionality.TopMenu($"Welcome, {u.Name}");
-        Functionality.NewMenu(menuOptions: new[] { "Test" });
-        Console.ReadLine();
+        Functionality.NewMenu(menuOptions: new[] { "My items", "See the market", "Trade history", "Log out" });
+        switch (Console.ReadLine())
+        {
+          case "1": // my items
+
+            break;
+
+          case "2": // see market
+
+            break;
+
+          case "3": // trade history
+
+            break;
+
+          case "4": // back 
+            currentMenu = Menu.None;
+            activeUser = null;
+            break;
+
+          default:
+
+            break;
+
+        }
+
+
         break;
 
       case Menu.Items:
