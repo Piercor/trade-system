@@ -29,6 +29,8 @@ foreach (string itemData in itemsCsv)
   }
 }
 
+List<Trade> userTrades = new List<Trade>();
+
 User? activeUser = null;
 
 bool isRunning = true;
@@ -223,7 +225,7 @@ while (isRunning)
             {
               if (item.Owner.Email == u.Email)
               {
-                Console.WriteLine(item.ShowItems(u));
+                Console.WriteLine("\n• " + item.ShowItems(u));
               }
             }
             Console.WriteLine();
@@ -263,7 +265,7 @@ while (isRunning)
                 currentMenu = Menu.Items; break;
 
               default:
-                Functionality.PrintMessage("", "inv", "cont"); break;
+                Functionality.PrintMessage("", "inv", "prev"); break;
             }
             break;
 
@@ -285,55 +287,206 @@ while (isRunning)
         switch (Console.ReadLine())
         {
           case "1": // see market >> other people items
-            Functionality.TopMenu("See other people's items");
-            foreach (User user in users)
-            {
-              if (user != activeUser)
-              {
-                foreach (Item item in userItems)
-                {
-                  if (item.Owner.Email == user.Email)
-                  {
-                    Console.WriteLine($"\n[{users.IndexOf(user) + 1}] {user.Name}");
-                    break;
-                  }
-                }
 
-                foreach (Item item in userItems)
+            bool isTrading = true;
+
+            while (isTrading)
+            {
+
+              Functionality.TopMenu("See other people's items");
+              foreach (User user in users)
+              {
+                if (user != activeUser)
                 {
-                  if (item.Owner.Email == user.Email)
+                  foreach (Item item in userItems)
                   {
-                    if (item.Name != "")
-                    { Console.WriteLine($"\n• " + item.ShowItems(u)); }
+                    if (item.Owner.Email == user.Email)
+                    {
+                      Console.WriteLine($"\n[{users.IndexOf(user) + 1}] {user.Name}");
+                      break;
+                    }
+                  }
+
+                  foreach (Item item in userItems)
+                  {
+                    if (item.Owner.Email == user.Email)
+                    {
+                      if (item.Name != "")
+                      { Console.WriteLine($"\n• " + item.ShowItems(u)); }
+                    }
+                  }
+                  foreach (Item item in userItems)
+                  {
+                    if (item.Owner.Email == user.Email)
+                    {
+                      Console.WriteLine("\n------------------------------");
+                      break;
+                    }
                   }
                 }
               }
-            }
+              Console.WriteLine();
+              Functionality.NewMenu(menuOptions: new[] { "Send a trade request", "Back to previous menu" });
+
+              switch (Console.ReadLine())
+              {
+                case "1":
+                  Console.Write("\nSelect an user index to make a trade request: ");
+                  string? choosedUser = Console.ReadLine();
+                  int userIndex = 0;
+                  User? choosedTradeUser = null;
+
+                  if (choosedUser != null & choosedUser != "")
+                  {
+                    if (int.TryParse(choosedUser, out userIndex) && userIndex > 0 && userIndex <= users.Count)
+                    {
+                      foreach (User user in users)
+                      {
+                        if (userIndex == users.IndexOf(user) + 1)
+                        {
+                          choosedUser = user.Email;
+                          choosedTradeUser = user;
+                          break;
+                        }
+                      }
+                    }
+                    else
+                    {
+                      Functionality.PrintMessage("", "inv", "cont");
+                    }
+                  }
+                  else
+                  {
+                    Functionality.PrintMessage("", "inv", "cont");
+                  }
+
+                  Debug.Assert(choosedTradeUser != null);
+                  Functionality.TopMenu($"Make a trade request with {choosedTradeUser.Name}");
+
+                  foreach (Item item in userItems)
+                  {
+                    if (item.Owner.Email == choosedUser)
+                    {
+                      Console.WriteLine($"[{userItems.IndexOf(item)}] " + item.ShowItems(choosedTradeUser) + "\n");
+                    }
+                  }
 
 
+                  Console.Write($"\nSelect the index of the item you want to trade with {choosedTradeUser.Name}: ");
+                  string? choosedIndex = Console.ReadLine();
+                  int selectedIndex = 0;
+                  Item? theirItem = null;
 
-            Functionality.NewMenu(menuOptions: new[] { "Send a trade request", "Back to previous menu" });
+                  if (choosedIndex != null && choosedIndex != "")
+                  {
+                    if (int.TryParse(choosedIndex, out selectedIndex) && selectedIndex > 0 && selectedIndex <= userItems.Count)
+                    {
+                      foreach (Item item in userItems)
+                      {
+                        if (selectedIndex == userItems.IndexOf(item) + 1)
+                        {
+                          if (item.Owner.Email == choosedTradeUser.Email)
+                          {
+                            theirItem = item;
+                            break;
+                          }
+                        }
+                      }
+                      bool alreadyTradingWithUser = false;
+                      bool tradingMine = true;
+                      while (tradingMine)
+                      {
+                        if (!alreadyTradingWithUser)
+                        {
+                          Console.Write($"\nDo you want to trade some of your items with {choosedTradeUser.Name}? [Y/N]: ");
+                        }
 
-            switch (Console.ReadLine())
-            {
-              case "1":
-                Console.Write("\nSelect an user index to make a trade request");
-                string? choosedUser = Console.ReadLine();
+                        switch (Console.ReadLine().ToLower())
+                        {
+                          case "y":
 
-                if (choosedUser != null & choosedUser != "")
-                {
+                            foreach (Item myItem in userItems)
+                            {
+                              if (u.Email == myItem.Owner.Email)
+                              {
+                                Console.WriteLine($"\n[{userItems.IndexOf(myItem) + 1}]" + myItem.ShowItems(activeUser));
+                              }
+                            }
+                            Console.Write("\nSelect the index of the item you want to trade with: ");
+                            string? myChoosedItem = Console.ReadLine();
+                            int myItemIndex = 0;
+                            Item? activeUserItem = null;
 
-                }
-                else
-                {
-                  Functionality.PrintMessage("", "inv", "cont");
-                }
+                            if (myChoosedItem != null && myChoosedItem != "")
+                            {
+                              if (int.TryParse(myChoosedItem, out myItemIndex) && myItemIndex > 0 && myItemIndex <= userItems.Count)
+                              {
+                                foreach (Item item in userItems)
+                                {
+                                  if (item.Owner.Email == u.Email)
+                                  {
+                                    if (myItemIndex == userItems.IndexOf(item))
+                                    {
+                                      activeUserItem = item;
+                                    }
+                                  }
+                                }
+                              }
+                              else { Functionality.PrintMessage("", "inv", "cont"); }
+                            }
+                            else { Functionality.PrintMessage("", "inv", "cont"); }
 
-                break;
+                            Console.Write($"\nDo you want to trade some more of your items with {choosedTradeUser.Name}? [Y/N]: ");
+                            switch (Console.ReadLine().ToLower())
+                            {
+                              case "y":
+                                alreadyTradingWithUser = true;
+                                break;
 
-              case "2": currentMenu = Menu.Market; break;
+                              case "n":
+                                List<Item> tradeItems = new List<Item>();
+                                tradeItems.Add(theirItem);
+                                tradeItems.Add(activeUserItem);
+                                userTrades.Add(new Trade(activeUser, choosedTradeUser, tradeItems));
+                                tradingMine = false;
+                                break;
 
-              default: Functionality.PrintMessage("", "inv", "cont"); break;
+                              default:
+                                Functionality.PrintMessage("", "inv", "cont"); break;
+                            }
+                            break;
+
+                          case "n":
+                            tradingMine = false;
+                            break;
+
+                          default:
+                            Functionality.PrintMessage("", "inv", "cont"); break;
+                        }
+                        break;
+                      }
+                      Console.Write("\nDo you want to do another trade? [Y/N]: ");
+                      switch (Console.ReadLine().ToLower())
+                      {
+                        case "y":
+                          break;
+
+                        case "n":
+                          isTrading = false;
+                          break;
+                      }
+                    }
+                    else { Functionality.PrintMessage("", "inv", "cont"); }
+                  }
+                  else { Functionality.PrintMessage("", "inv", "cont"); }
+
+                  Functionality.PrintMessage("", "", "prev");
+                  break;
+
+                case "2": currentMenu = Menu.Market; break;
+
+                default: Functionality.PrintMessage("", "inv", "cont"); break;
+              }
             }
             break;
 
@@ -347,6 +500,7 @@ while (isRunning)
           default: Functionality.PrintMessage("", "inv", "cont"); break;
 
         }
+        // }
         break;
 
       case Menu.History:

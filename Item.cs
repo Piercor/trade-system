@@ -16,7 +16,7 @@ class Item
   public string ShowItems(User user)
   {
     if (user == Owner)
-    { return $"\n• {Name}\n{Description}"; }
+    { return $"{Name}\n  {Description}"; }
     else if (user != Owner)
     { return $"{Name}\n  {Description}\n  Owner: {Owner.Name}"; }
     else { return $"\nNo items found"; }

@@ -5,11 +5,12 @@ class Trade
 {
   public User Sender;
   public User Receiver;
-  List<Item> _items = new List<Item>();
+  public List<Item> Items;
 
-  public Trade(User s, User r)
+  public Trade(User s, User r, List<Item> i)
   {
     Sender = s;
     Receiver = r;
+    Items = i;
   }
 }
