@@ -32,7 +32,7 @@ abstract class Functionality
     }
     Console.Write($"\n\nSelect an option [{(menuOptions.Length > 1 ? "1-" + menuOptions.Length : menuOptions.Length)}]: ");
   }
-  public static void ErrorMsg(string msg, string cause, string action)
+  public static void PrintMessage(string msg, string cause, string action)
   {
     if (msg != "")
     {

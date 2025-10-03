@@ -60,7 +60,7 @@ while (isRunning)
             break;
 
           default:
-            Functionality.ErrorMsg("", "inv", "cont");
+            Functionality.PrintMessage("", "inv", "cont");
             break;
         }
         break;
@@ -89,7 +89,7 @@ while (isRunning)
         }
         if (activeUser == null)
         {
-          Functionality.ErrorMsg("No users were found with the given email and password", "", "prev");
+          Functionality.PrintMessage("No users were found with the given email and password", "", "prev");
           currentMenu = Menu.None;
         }
         break;
@@ -113,7 +113,7 @@ while (isRunning)
             {
               if (user.Email == newEmail)
               {
-                Functionality.ErrorMsg("There is another user registered with that email already", "", "prev");
+                Functionality.PrintMessage("There is another user registered with that email already", "", "prev");
                 currentMenu = Menu.None;
                 continueRegistration = false;
                 break;
@@ -127,9 +127,8 @@ while (isRunning)
 
               if (newEmail != repEmail)
               {
-                Functionality.ErrorMsg("", "Email doesn't match", "prev");
-                currentMenu = Menu.None;
-                break;
+                Functionality.PrintMessage("", "Email doesn't match", "prev");
+                currentMenu = Menu.None; break;
               }
               else
               {
@@ -140,15 +139,14 @@ while (isRunning)
                 {
                   if (newPass == newEmail)
                   {
-                    Functionality.ErrorMsg("Password can't be the same as email", "", "prev");
+                    Functionality.PrintMessage("Password can't be the same as email", "", "prev");
                     currentMenu = Menu.None;
                     break;
                   }
                   else if (newPass == newName)
                   {
-                    Functionality.ErrorMsg("Password can't be the same as name", "", "prev");
-                    currentMenu = Menu.None;
-                    break;
+                    Functionality.PrintMessage("Password can't be the same as name", "", "prev");
+                    currentMenu = Menu.None; break;
                   }
                   else
                   {
@@ -157,9 +155,8 @@ while (isRunning)
 
                     if (repPass != newPass)
                     {
-                      Functionality.ErrorMsg("Password doesn't match", "", "prev");
-                      currentMenu = Menu.None;
-                      break;
+                      Functionality.PrintMessage("Password doesn't match", "", "prev");
+                      currentMenu = Menu.None; break;
                     }
                     else
                     {
@@ -169,7 +166,7 @@ while (isRunning)
                       string newUserLine = $"{newName},{newEmail},{newPass}";
                       File.AppendAllText("Users.csv", newUserLine + Environment.NewLine);
                       Console.WriteLine($"\nNew user sucessfully created. Welcome {newName}!");
-                      Functionality.ErrorMsg("", "", "prev");
+                      Functionality.PrintMessage("", "", "prev");
                       currentMenu = Menu.None;
                       break;
                     }
@@ -177,17 +174,15 @@ while (isRunning)
                 }
                 else
                 {
-                  Functionality.ErrorMsg("", "inv", "prev"); break;
+                  Functionality.PrintMessage("", "inv", "prev"); break;
                 }
               }
             }
           }
-          else { Functionality.ErrorMsg("", "inv", "prev"); }
+          else { Functionality.PrintMessage("", "inv", "prev"); }
         }
-        else { Functionality.ErrorMsg("", "inv", "prev"); }
-        currentMenu = Menu.None;
-        break;
-
+        else { Functionality.PrintMessage("", "inv", "prev"); }
+        currentMenu = Menu.None; break;
     }
   }
   else if (activeUser is User u)
@@ -200,8 +195,7 @@ while (isRunning)
         switch (Console.ReadLine())
         {
           case "1": // my items
-            currentMenu = Menu.Items;
-            break;
+            currentMenu = Menu.Items; break;
 
           case "2": // see market
 
@@ -212,16 +206,11 @@ while (isRunning)
             break;
 
           case "4": // back 
-            currentMenu = Menu.None;
-            activeUser = null;
-            break;
+            currentMenu = Menu.None; activeUser = null; break;
 
           default:
-            Functionality.ErrorMsg("", "inv", "cont");
-            break;
+            Functionality.PrintMessage("", "inv", "cont"); break;
         }
-
-
         break;
 
       case Menu.Items:
@@ -258,26 +247,24 @@ while (isRunning)
                     userItems.Add(new Item(newItemName, newItemDescription, u));
                     string newItemLine = $"{newItemName};{newItemDescription};{u.Email}";
                     File.AppendAllText("Items.csv", newItemLine + Environment.NewLine);
-                    Functionality.ErrorMsg($"New item '{newItemName}' sucessfully added", "", "prev");
+                    Functionality.PrintMessage($"New item '{newItemName}' sucessfully added", "", "prev");
                   }
                   else
                   {
-                    Functionality.ErrorMsg("Item's description can't be empty", "", "prev");
+                    Functionality.PrintMessage("Item's description can't be empty", "", "prev");
                   }
                 }
                 else
                 {
-                  Functionality.ErrorMsg("Item's name can't be empty", "", "prev");
+                  Functionality.PrintMessage("Item's name can't be empty", "", "prev");
                 }
                 break;
 
               case "2":
-                currentMenu = Menu.Items;
-                break;
+                currentMenu = Menu.Items; break;
 
               default:
-                Functionality.ErrorMsg("", "inv", "cont");
-                break;
+                Functionality.PrintMessage("", "inv", "cont"); break;
             }
             break;
 
@@ -286,12 +273,10 @@ while (isRunning)
             break;
 
           case "3": // my items >> previous menu
-            currentMenu = Menu.Main;
-            break;
+            currentMenu = Menu.Main; break;
 
           default:
-            Functionality.ErrorMsg("", "inv", "cont");
-            break;
+            Functionality.PrintMessage("", "inv", "cont"); break;
         }
         break;
 
