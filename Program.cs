@@ -18,12 +18,17 @@ List<Item> userItems = new List<Item>();
 string[] itemsCsv = File.ReadAllLines("Items.csv");
 foreach (string itemData in itemsCsv)
 {
+  bool itemTrading = false;
   string[] itemSplitData = itemData.Split(";");
   foreach (User user in users)
   {
     if (user.Email == itemSplitData[2])
     {
-      userItems.Add(new Item(itemSplitData[0], itemSplitData[1], user));
+      if (itemSplitData[3] == "true")
+      {
+        itemTrading = true;
+      }
+      userItems.Add(new Item(itemSplitData[0], itemSplitData[1], user, itemTrading));
       break;
     }
   }
@@ -246,8 +251,8 @@ while (isRunning)
                   {
                     Debug.Assert(newItemName != null);
                     Debug.Assert(newItemDescription != null);
-                    userItems.Add(new Item(newItemName, newItemDescription, u));
-                    string newItemLine = $"{newItemName};{newItemDescription};{u.Email}";
+                    userItems.Add(new Item(newItemName, newItemDescription, u, false));
+                    string newItemLine = $"{newItemName};{newItemDescription};{u.Email};false";
                     File.AppendAllText("Items.csv", newItemLine + Environment.NewLine);
                     Functionality.PrintMessage($"New item '{newItemName}' sucessfully added", "", "prev");
                   }
@@ -294,7 +299,6 @@ while (isRunning)
 
             while (isTrading)
             {
-
               Functionality.TopMenu("See other people's items");
               foreach (User user in users)
               {
