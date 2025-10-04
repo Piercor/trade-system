@@ -217,7 +217,7 @@ while (isRunning)
 
       case Menu.Items:
         Functionality.TopMenu("My items");
-        Functionality.NewMenu(menuOptions: new[] { "See my items", "Trade requests", "Back to previous menu" });
+        Functionality.NewMenu(menuOptions: new[] { "See my items", "Received trade requests", "Back to previous menu" });
         switch (Console.ReadLine())
         {
           case "1": // my items >> see my items
@@ -270,7 +270,99 @@ while (isRunning)
             }
             break;
 
-          case "2": // my items >> trade request
+          case "2": // my items >> received trade request
+
+            Functionality.TopMenu("Received trade requests");
+            bool foundTrade = false;
+
+            foreach (Trade trade in userTrades)
+            {
+              if (trade.Status == TradeStatus.Pending)
+              {
+                if (trade.Receiver == u)
+                {
+                  Console.WriteLine($"\n[{userTrades.IndexOf(trade) + 1}] Trade with {trade.Sender.Name}");
+
+                  { Console.WriteLine($"\nMy items:"); }
+                  foreach (Item item in trade.Items)
+                  {
+                    if (trade.Sender != item.Owner)
+                    { Console.WriteLine($"• {item.Name} - {item.Description} "); }
+                  }
+
+                  Console.WriteLine($"\n{trade.Sender.Name}'s items:");
+                  foreach (Item item in trade.Items)
+                  {
+                    if (trade.Receiver == u && item.Owner != u)
+                    {
+                      Console.WriteLine($"• {item.Name} - {item.Description}");
+                    }
+                  }
+                  Console.WriteLine($"\nStatus: {trade.Status.ToString()}");
+                  Console.WriteLine("\n------------------------------");
+                  foundTrade = true;
+                  break;
+                }
+                else { foundTrade = false; }
+              }
+              else { foundTrade = false; }
+            }
+            if (!foundTrade)
+            { Functionality.PrintMessage("No trades to show", "", "prev"); break; }
+
+
+            Functionality.NewMenu(menuOptions: new[] { "Accept/deny trade requests", "Back to previous menu" });
+            switch (Console.ReadLine())
+            {
+              case "1":
+                Console.Write("\nSelect the index of the trade you want to manage: ");
+                string? choosedTradeIndex = Console.ReadLine();
+                int tradeIndex = 0;
+                Trade? selectedTrade = null;
+
+                if (choosedTradeIndex != null && choosedTradeIndex != "")
+                {
+                  if (int.TryParse(choosedTradeIndex, out tradeIndex) && tradeIndex > 0 && tradeIndex <= userTrades.Count)
+                  {
+                    foreach (Trade trade in userTrades)
+                    {
+                      if (tradeIndex == userTrades.IndexOf(trade) + 1 && trade.Receiver == u)
+                      {
+                        selectedTrade = trade;
+                      }
+                    }
+                  }
+                  else { Functionality.PrintMessage("", "inv", "prev"); break; }
+                }
+                else { Functionality.PrintMessage("", "inv", "prev"); break; }
+
+                if (selectedTrade == null) { Functionality.PrintMessage("", "inv", "prev"); break; }
+
+                Console.Write($"\nDo you want to accept the trade with {selectedTrade.Sender.Name}? [Y/N]: ");
+                switch (Console.ReadLine().ToLower())
+                {
+                  case "y":
+                    selectedTrade.Status = TradeStatus.Accepted;
+                    Functionality.PrintMessage($"Trade with {selectedTrade.Sender.Name} accepted", "", "prev");
+                    break;
+
+                  case "n":
+                    selectedTrade.Status = TradeStatus.Denied;
+                    Functionality.PrintMessage($"Trade with {selectedTrade.Sender.Name} denied", "", "prev");
+                    break;
+                }
+
+                break;
+
+              case "2":
+                currentMenu = Menu.Items;
+                break;
+
+              default:
+                Functionality.PrintMessage("", "inv", "cont");
+                break;
+            }
+
 
             break;
 
