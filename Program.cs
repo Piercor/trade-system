@@ -1,6 +1,8 @@
 ﻿
 using App;
+using System.Data;
 using System.Diagnostics;
+using System.Net;
 
 List<User> users = new List<User>();
 
@@ -29,8 +31,46 @@ foreach (string itemData in itemsCsv)
 
 List<Trade> userTrades = new List<Trade>();
 
+string[] tradesCsv = File.ReadAllLines("Trades.csv");
+foreach (string tradeData in tradesCsv)
+{
+  User? tradeSender = null;
+  User? tradeReceiver = null;
+  TradeStatus tradeStatus = TradeStatus.Pending;
+  List<Item> tradeList = new List<Item>();
 
-
+  string[] tradeSplitData = tradeData.Split(",");
+  foreach (Trade trade in userTrades)
+  {
+    foreach (User user in users)
+    {
+      if (trade.Sender.ToString() == tradeSplitData[0])
+      {
+        tradeSender = user;
+        break;
+      }
+      if (trade.Receiver.ToString() == tradeSplitData[1])
+      {
+        tradeReceiver = user;
+        break;
+      }
+      if (trade.Status.ToString() == tradeSplitData[2])
+      {
+        tradeStatus = trade.Status;
+        break;
+      }
+      foreach (Item item in userItems)
+      {
+        if (item.Owner.Email == user.Email)
+        {
+          tradeList.Add(item);
+          break;
+        }
+        userTrades.Add(new Trade(tradeSender, tradeReceiver, tradeStatus, tradeList));
+      }
+    }
+  }
+}
 
 
 User? activeUser = null;
@@ -284,6 +324,7 @@ while (isRunning)
         break;
 
       case Menu.Market:
+
         Functionality.TopMenu("See the market");
         Functionality.NewMenu(menuOptions: new[] { "See other people's items", "My trade request", "Back to previous menu" });
         switch (Console.ReadLine())
@@ -337,6 +378,7 @@ while (isRunning)
                   string? choosedUser = Console.ReadLine();
                   int userIndex = 0;
                   User? choosedTradeUser = null;
+                  List<Item> tradeItems = new List<Item>();
 
                   if (choosedUser != null & choosedUser != "")
                   {
@@ -369,7 +411,7 @@ while (isRunning)
                   {
                     if (item.Owner.Email == choosedUser)
                     {
-                      Console.WriteLine($"[{userItems.IndexOf(item)}] " + item.ShowItems(choosedTradeUser) + "\n");
+                      Console.WriteLine($"[{userItems.IndexOf(item) + 1}] " + item.ShowItems(choosedTradeUser) + "\n");
                     }
                   }
 
@@ -377,7 +419,6 @@ while (isRunning)
                   Console.Write($"\nSelect the index of the item you want to trade with {choosedTradeUser.Name}: ");
                   string? choosedIndex = Console.ReadLine();
                   int selectedIndex = 0;
-                  Item? theirItem = null;
 
                   if (choosedIndex != null && choosedIndex != "")
                   {
@@ -389,7 +430,7 @@ while (isRunning)
                         {
                           if (item.Owner.Email == choosedTradeUser.Email)
                           {
-                            theirItem = item;
+                            tradeItems.Add(item);
                             break;
                           }
                         }
@@ -423,7 +464,6 @@ while (isRunning)
                             Console.Write("\nSelect the index of the item you want to trade with: ");
                             string? myChoosedItem = Console.ReadLine();
                             int myItemIndex = 0;
-                            Item? activeUserItem = null;
 
                             if (myChoosedItem != null && myChoosedItem != "")
                             {
@@ -433,9 +473,9 @@ while (isRunning)
                                 {
                                   if (item.Owner.Email == u.Email)
                                   {
-                                    if (myItemIndex == userItems.IndexOf(item))
+                                    if (myItemIndex == userItems.IndexOf(item) + 1)
                                     {
-                                      activeUserItem = item;
+                                      tradeItems.Add(item);
                                       break;
                                     }
                                   }
@@ -453,13 +493,8 @@ while (isRunning)
                                 break;
 
                               case "n":
-                                List<Item> tradeItems = new List<Item>();
-                                tradeItems.Add(theirItem);
-                                tradeItems.Add(activeUserItem);
-                                userTrades.Add(new Trade(activeUser, choosedTradeUser, TradeStatus.Pending, tradeItems));
 
-                                Console.WriteLine($"{activeUser.Email} {choosedTradeUser.Email} {tradeItems}");
-                                Console.ReadLine();
+                                userTrades.Add(new Trade(activeUser, choosedTradeUser, TradeStatus.Pending, tradeItems));
                                 tradingMine = false;
                                 break;
 
@@ -469,13 +504,14 @@ while (isRunning)
                             break;
 
                           case "n":
+
+                            userTrades.Add(new Trade(activeUser, choosedTradeUser, TradeStatus.Pending, tradeItems));
                             tradingMine = false;
                             break;
 
                           default:
                             Functionality.PrintMessage("", "inv", "cont"); break;
                         }
-                        //break;
                       }
                       Console.Write("\nDo you want to do another trade? [Y/N]: ");
                       switch (Console.ReadLine().ToLower())
