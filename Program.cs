@@ -285,7 +285,7 @@ while (isRunning)
       case Menu.Market:
 
         Functionality.TopMenu("See the market");
-        Functionality.NewMenu(menuOptions: new[] { "See other people's items", "My trade request", "Back to previous menu" });
+        Functionality.NewMenu(menuOptions: new[] { "See other people's items", "My trade requests", "Back to previous menu" });
         switch (Console.ReadLine())
         {
           case "1": // see market >> other people items
@@ -524,7 +524,35 @@ while (isRunning)
             break;
 
           case "2": //see market >> my trade request
+            Functionality.TopMenu("My trade requests");
 
+            foreach (Trade trade in userTrades)
+            {
+              if (trade.Sender == u)
+              {
+                Console.WriteLine($"\nTrade with {trade.Receiver.Name}");
+
+                { Console.WriteLine($"\n{trade.Receiver.Name}'s items:"); }
+                foreach (Item item in trade.Items)
+                {
+                  if (trade.Receiver == item.Owner)
+                  { Console.WriteLine($"• {item.Name} - {item.Description} "); }
+                }
+
+                Console.WriteLine($"\nmy items:");
+                foreach (Item item in trade.Items)
+                {
+                  if (trade.Sender == u && item.Owner == u)
+                  {
+                    Console.WriteLine($"• {item.Name} - {item.Description}");
+                  }
+                }
+              }
+              Console.WriteLine($"\nStatus: {trade.Status.ToString()}");
+              Console.WriteLine("\n------------------------------");
+            }
+
+            Functionality.PrintMessage("", "", "prev");
             break;
 
           case "3": // see market >> back previous menu
