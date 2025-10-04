@@ -31,47 +31,6 @@ foreach (string itemData in itemsCsv)
 
 List<Trade> userTrades = new List<Trade>();
 
-string[] tradesCsv = File.ReadAllLines("Trades.csv");
-foreach (string tradeData in tradesCsv)
-{
-  User? tradeSender = null;
-  User? tradeReceiver = null;
-  TradeStatus tradeStatus = TradeStatus.Pending;
-  List<Item> tradeList = new List<Item>();
-
-  string[] tradeSplitData = tradeData.Split(",");
-  foreach (Trade trade in userTrades)
-  {
-    foreach (User user in users)
-    {
-      if (trade.Sender.ToString() == tradeSplitData[0])
-      {
-        tradeSender = user;
-        break;
-      }
-      if (trade.Receiver.ToString() == tradeSplitData[1])
-      {
-        tradeReceiver = user;
-        break;
-      }
-      if (trade.Status.ToString() == tradeSplitData[2])
-      {
-        tradeStatus = trade.Status;
-        break;
-      }
-      foreach (Item item in userItems)
-      {
-        if (item.Owner.Email == user.Email)
-        {
-          tradeList.Add(item);
-          break;
-        }
-        userTrades.Add(new Trade(tradeSender, tradeReceiver, tradeStatus, tradeList));
-      }
-    }
-  }
-}
-
 
 User? activeUser = null;
 
