@@ -204,8 +204,7 @@ while (isRunning)
             currentMenu = Menu.Market; break;
 
           case "3": // trade history
-
-            break;
+            currentMenu = Menu.History; break;
 
           case "4": // back 
             currentMenu = Menu.None; activeUser = null; break;
@@ -369,8 +368,7 @@ while (isRunning)
           case "3": // my items >> previous menu
             currentMenu = Menu.Main; break;
 
-          default:
-            Functionality.PrintMessage("", "inv", "cont"); break;
+          default: Functionality.PrintMessage("", "inv", "cont"); break;
         }
         break;
 
@@ -656,6 +654,100 @@ while (isRunning)
         break;
 
       case Menu.History:
+        Functionality.TopMenu("Trade history");
+        Functionality.NewMenu(menuOptions: new[] { "Sent trade requests", "Received trade requests", "Back to previous menu" });
+
+        switch (Console.ReadLine())
+        {
+          case "1":
+
+            Functionality.TopMenu("Sent trade requests");
+            bool foundSentTrade = false;
+
+            foreach (Trade trade in userTrades)
+            {
+              if (trade.Status != TradeStatus.Pending)
+              {
+                if (trade.Sender == u)
+                {
+                  Console.WriteLine($"\nTrade with {trade.Receiver.Name}");
+
+                  { Console.WriteLine($"\n{trade.Receiver.Name}'s items:"); }
+                  foreach (Item item in trade.Items)
+                  {
+                    if (trade.Receiver == item.Owner)
+                    { Console.WriteLine($"• {item.Name} - {item.Description} "); }
+                  }
+
+                  Console.WriteLine($"\nmy items:");
+                  foreach (Item item in trade.Items)
+                  {
+                    if (trade.Sender == u && item.Owner == u)
+                    {
+                      Console.WriteLine($"• {item.Name} - {item.Description}");
+                    }
+                  }
+                  Console.WriteLine($"\nStatus: {trade.Status.ToString()}");
+                  Console.WriteLine("\n------------------------------");
+                  foundSentTrade = true;
+                }
+                else { foundSentTrade = false; }
+              }
+              else { foundSentTrade = false; }
+            }
+            if (!foundSentTrade)
+            { Functionality.PrintMessage("No trades history to show", "", "prev"); break; }
+
+            Functionality.PrintMessage("", "", "prev");
+            break;
+
+          case "2":
+
+            Functionality.TopMenu("Received trade requests");
+            bool foundReceivedTrade = false;
+
+            foreach (Trade trade in userTrades)
+            {
+              if (trade.Status != TradeStatus.Pending)
+              {
+                if (trade.Receiver == u)
+                {
+                  Console.WriteLine($"\nTrade with {trade.Sender.Name}");
+
+                  { Console.WriteLine($"\nMy items:"); }
+                  foreach (Item item in trade.Items)
+                  {
+                    if (trade.Sender != item.Owner)
+                    { Console.WriteLine($"• {item.Name} - {item.Description} "); }
+                  }
+
+                  Console.WriteLine($"\n{trade.Sender.Name}'s items:");
+                  foreach (Item item in trade.Items)
+                  {
+                    if (trade.Receiver == u && item.Owner != u)
+                    {
+                      Console.WriteLine($"• {item.Name} - {item.Description}");
+                    }
+                  }
+                  Console.WriteLine($"\nStatus: {trade.Status.ToString()}");
+                  Console.WriteLine("\n------------------------------");
+                  foundReceivedTrade = true;
+                  break;
+                }
+                else { foundReceivedTrade = false; }
+              }
+              else { foundReceivedTrade = false; }
+            }
+            if (!foundReceivedTrade)
+            { Functionality.PrintMessage("No trades history to show", "", "prev"); break; }
+
+            Functionality.PrintMessage("", "", "prev");
+            break;
+
+          case "3": currentMenu = Menu.Main; break;
+
+          default: Functionality.PrintMessage("", "inv", "cont"); break;
+        }
 
         break;
     }
