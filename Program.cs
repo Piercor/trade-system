@@ -338,6 +338,7 @@ while (isRunning)
                   int userIndex = 0;
                   User? choosedTradeUser = null;
                   List<Item> tradeItems = new List<Item>();
+                  bool haveItem = false;
 
                   if (choosedUser != null & choosedUser != "")
                   {
@@ -352,15 +353,38 @@ while (isRunning)
                           break;
                         }
                       }
+                      if (choosedUser == u.Email)
+                      {
+                        choosedTradeUser = null;
+                      }
+                      if (choosedTradeUser == null)
+                      {
+                        Functionality.PrintMessage("", "inv", "cont");
+                        break;
+                      }
+                      foreach (Item item in userItems)
+                      {
+                        if (item.Owner.Email == choosedUser)
+                        {
+                          haveItem = true;
+                        }
+                      }
+                      if (!haveItem)
+                      {
+                        Functionality.PrintMessage("", "inv", "cont");
+                        break;
+                      }
                     }
                     else
                     {
                       Functionality.PrintMessage("", "inv", "cont");
+                      break;
                     }
                   }
                   else
                   {
                     Functionality.PrintMessage("", "inv", "cont");
+                    break;
                   }
 
                   Debug.Assert(choosedTradeUser != null);
@@ -374,10 +398,10 @@ while (isRunning)
                     }
                   }
 
-
                   Console.Write($"\nSelect the index of the item you want to trade with {choosedTradeUser.Name}: ");
                   string? choosedIndex = Console.ReadLine();
                   int selectedIndex = 0;
+                  bool tradingMine = true;
 
                   if (choosedIndex != null && choosedIndex != "")
                   {
@@ -385,85 +409,82 @@ while (isRunning)
                     {
                       foreach (Item item in userItems)
                       {
-                        if (selectedIndex == userItems.IndexOf(item) + 1)
+                        if (selectedIndex == userItems.IndexOf(item) + 1 && item.Owner.Email == choosedUser)
                         {
-                          if (item.Owner.Email == choosedTradeUser.Email)
+                          tradeItems.Add(item);
+                          tradingMine = true;
+                          break;
+                        }
+                        else { tradingMine = false; }
+                      }
+                      if (!tradingMine)
+                      {
+                        Functionality.PrintMessage("", "inv", "prev");
+                        break;
+                      }
+                    }
+                    else { Functionality.PrintMessage("", "inv", "prev"); tradingMine = false; break; }
+                  }
+                  else { Functionality.PrintMessage("", "inv", "prev"); tradingMine = false; break; }
+
+                  bool alreadyTradingWithUser = false;
+
+                  while (tradingMine)
+                  {
+                    string yesOrNo = "";
+                    if (!alreadyTradingWithUser)
+                    {
+                      Console.Write($"\nDo you want to trade some of your items with {choosedTradeUser.Name}? [Y/N]: ");
+                      yesOrNo = Console.ReadLine()?.ToLower();
+                    }
+                    else
+                    {
+                      yesOrNo = "y";
+                    }
+
+                    switch (yesOrNo)
+                    {
+                      case "y":
+
+                        foreach (Item myItem in userItems)
+                        {
+                          if (u.Email == myItem.Owner.Email)
                           {
-                            tradeItems.Add(item);
-                            break;
+                            Console.WriteLine($"\n[{userItems.IndexOf(myItem) + 1}]" + myItem.ShowItems(activeUser));
                           }
                         }
-                      }
-                      bool alreadyTradingWithUser = false;
-                      bool tradingMine = true;
-                      while (tradingMine)
-                      {
-                        string yesOrNo = "";
-                        if (!alreadyTradingWithUser)
-                        {
-                          Console.Write($"\nDo you want to trade some of your items with {choosedTradeUser.Name}? [Y/N]: ");
-                          yesOrNo = Console.ReadLine()?.ToLower();
-                        }
-                        else
-                        {
-                          yesOrNo = "y";
-                        }
+                        Console.Write("\nSelect the index of the item you want to trade with: ");
+                        string? myChoosedItem = Console.ReadLine();
+                        int myItemIndex = 0;
 
-                        switch (yesOrNo)
+                        if (myChoosedItem != null && myChoosedItem != "")
                         {
-                          case "y":
-
-                            foreach (Item myItem in userItems)
+                          if (int.TryParse(myChoosedItem, out myItemIndex) && myItemIndex > 0 && myItemIndex <= userItems.Count)
+                          {
+                            foreach (Item item in userItems)
                             {
-                              if (u.Email == myItem.Owner.Email)
+                              if (item.Owner.Email == u.Email)
                               {
-                                Console.WriteLine($"\n[{userItems.IndexOf(myItem) + 1}]" + myItem.ShowItems(activeUser));
-                              }
-                            }
-                            Console.Write("\nSelect the index of the item you want to trade with: ");
-                            string? myChoosedItem = Console.ReadLine();
-                            int myItemIndex = 0;
-
-                            if (myChoosedItem != null && myChoosedItem != "")
-                            {
-                              if (int.TryParse(myChoosedItem, out myItemIndex) && myItemIndex > 0 && myItemIndex <= userItems.Count)
-                              {
-                                foreach (Item item in userItems)
+                                if (myItemIndex == userItems.IndexOf(item) + 1)
                                 {
-                                  if (item.Owner.Email == u.Email)
-                                  {
-                                    if (myItemIndex == userItems.IndexOf(item) + 1)
-                                    {
-                                      tradeItems.Add(item);
-                                      break;
-                                    }
-                                  }
+                                  tradeItems.Add(item);
+                                  break;
                                 }
                               }
-                              else { Functionality.PrintMessage("", "inv", "cont"); }
                             }
-                            else { Functionality.PrintMessage("", "inv", "cont"); }
+                          }
+                          else { Functionality.PrintMessage("", "inv", "cont"); }
+                        }
+                        else { Functionality.PrintMessage("", "inv", "cont"); }
 
-                            Console.Write($"\nDo you want to trade some more of your items with {choosedTradeUser.Name}? [Y/N]: ");
-                            switch (Console.ReadLine().ToLower())
-                            {
-                              case "y":
-                                alreadyTradingWithUser = true;
-                                break;
-
-                              case "n":
-
-                                userTrades.Add(new Trade(activeUser, choosedTradeUser, TradeStatus.Pending, tradeItems));
-                                tradingMine = false;
-                                break;
-
-                              default:
-                                Functionality.PrintMessage("", "inv", "cont"); break;
-                            }
+                        Console.Write($"\nDo you want to trade some more of your items with {choosedTradeUser.Name}? [Y/N]: ");
+                        switch (Console.ReadLine().ToLower())
+                        {
+                          case "y":
+                            alreadyTradingWithUser = true;
                             break;
 
                           case "n":
-
                             userTrades.Add(new Trade(activeUser, choosedTradeUser, TradeStatus.Pending, tradeItems));
                             tradingMine = false;
                             break;
@@ -471,21 +492,28 @@ while (isRunning)
                           default:
                             Functionality.PrintMessage("", "inv", "cont"); break;
                         }
-                      }
-                      Console.Write("\nDo you want to do another trade? [Y/N]: ");
-                      switch (Console.ReadLine().ToLower())
-                      {
-                        case "y":
-                          break;
+                        break;
 
-                        case "n":
-                          isTrading = false;
-                          break;
-                      }
+                      case "n":
+
+                        userTrades.Add(new Trade(activeUser, choosedTradeUser, TradeStatus.Pending, tradeItems));
+                        tradingMine = false;
+                        break;
+
+                      default:
+                        Functionality.PrintMessage("", "inv", "cont"); break;
                     }
-                    else { Functionality.PrintMessage("", "inv", "cont"); }
                   }
-                  else { Functionality.PrintMessage("", "inv", "cont"); }
+                  Console.Write("\nDo you want to do another trade? [Y/N]: ");
+                  switch (Console.ReadLine().ToLower())
+                  {
+                    case "y":
+                      break;
+
+                    case "n":
+                      isTrading = false;
+                      break;
+                  }
 
                   break;
 
@@ -506,7 +534,6 @@ while (isRunning)
           default: Functionality.PrintMessage("", "inv", "cont"); break;
 
         }
-        // }
         break;
 
       case Menu.History:
