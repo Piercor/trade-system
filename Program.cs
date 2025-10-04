@@ -29,7 +29,56 @@ foreach (string itemData in itemsCsv)
   }
 }
 
+
 List<Trade> userTrades = new List<Trade>();
+
+string[] tradesCsv = File.ReadAllLines("Trades.csv");
+foreach (string tradeData in tradesCsv)
+{
+  User? tradeSender = null;
+  User? tradeReceiver = null;
+  TradeStatus tradeStatus = TradeStatus.Pending;
+  List<Item> tradeList = new List<Item>();
+
+  string[] tradeSplitData = tradeData.Split(",");
+
+  foreach (User user in users)
+  {
+    if (user.Email == tradeSplitData[0])
+    {
+      tradeSender = user;
+    }
+    if (user.Email == tradeSplitData[1])
+    {
+      tradeReceiver = user;
+    }
+  }
+  if (tradeSplitData[2] == "Pending")
+  {
+    tradeStatus = TradeStatus.Pending;
+  }
+  else if (tradeSplitData[2] == "Accepted")
+  {
+    tradeStatus = TradeStatus.Accepted;
+  }
+  else
+  {
+    tradeStatus = TradeStatus.Denied;
+  }
+  foreach (Item item in userItems)
+  {
+    if (item.Owner.Email == tradeSplitData[3] && item.Name == tradeSplitData[4])
+    {
+      tradeList.Add(item);
+    }
+    if (item.Owner.Email == tradeSplitData[5] && item.Name == tradeSplitData[6])
+    {
+      tradeList.Add(item);
+
+    }
+  }
+  userTrades.Add(new Trade(tradeSender, tradeReceiver, tradeStatus, tradeList));
+}
 
 
 User? activeUser = null;
@@ -490,6 +539,7 @@ while (isRunning)
                   Console.Write($"\nSelect the index of the item you want to trade with {choosedTradeUser.Name}: ");
                   string? choosedIndex = Console.ReadLine();
                   int selectedIndex = 0;
+                  string theirItemLine = "";
 
                   if (choosedIndex != null && choosedIndex != "")
                   {
@@ -500,6 +550,7 @@ while (isRunning)
                         if (selectedIndex == userItems.IndexOf(item) + 1 && item.Owner.Email == choosedUser)
                         {
                           tradeItems.Add(item);
+                          theirItemLine = $"{item.Owner.Email},{item.Name},";
                           break;
                         }
                       }
@@ -509,6 +560,7 @@ while (isRunning)
                   else { Functionality.PrintMessage("", "inv", "prev"); break; }
 
                   Console.Write($"\nDo you want to trade some of your items with {choosedTradeUser.Name}? [Y/N]: ");
+
 
                   switch (Console.ReadLine()?.ToLower())
                   {
@@ -525,6 +577,7 @@ while (isRunning)
                       string? myChoosedItem = Console.ReadLine();
                       int myItemIndex = 0;
 
+
                       if (myChoosedItem != null && myChoosedItem != "")
                       {
                         if (int.TryParse(myChoosedItem, out myItemIndex) && myItemIndex > 0 && myItemIndex <= userItems.Count)
@@ -537,6 +590,12 @@ while (isRunning)
                               {
                                 tradeItems.Add(item);
                                 userTrades.Add(new Trade(activeUser, choosedTradeUser, TradeStatus.Pending, tradeItems));
+
+
+                                string myItemLine = myItemLine = $"{u.Email},{item.Name}";
+
+                                string tradeLine = $"{activeUser.Email},{choosedTradeUser.Email},{TradeStatus.Pending},";
+                                File.AppendAllText("Trades.csv", tradeLine + theirItemLine + myItemLine + Environment.NewLine);
                                 break;
                               }
                             }
@@ -551,6 +610,9 @@ while (isRunning)
                     case "n":
 
                       userTrades.Add(new Trade(activeUser, choosedTradeUser, TradeStatus.Pending, tradeItems));
+
+                      string newTradeLine = $"{activeUser.Email},{choosedTradeUser.Email},{TradeStatus.Pending},";
+                      File.AppendAllText("Trades.csv", newTradeLine + theirItemLine + Environment.NewLine);
                       break;
 
                     default:
@@ -636,14 +698,14 @@ while (isRunning)
                 {
                   Console.WriteLine($"\nTrade with {trade.Receiver.Name}");
 
-                  { Console.WriteLine($"\n{trade.Receiver.Name}'s items:"); }
+                  { Console.WriteLine($"\n{trade.Receiver.Name}'s item:"); }
                   foreach (Item item in trade.Items)
                   {
                     if (trade.Receiver == item.Owner)
                     { Console.WriteLine($"• {item.Name} - {item.Description} "); }
                   }
 
-                  Console.WriteLine($"\nmy items:");
+                  Console.WriteLine($"\nmy item:");
                   foreach (Item item in trade.Items)
                   {
                     if (trade.Sender == u && item.Owner == u)
@@ -678,14 +740,14 @@ while (isRunning)
                 {
                   Console.WriteLine($"\nTrade with {trade.Sender.Name}");
 
-                  { Console.WriteLine($"\nMy items:"); }
+                  { Console.WriteLine($"\nMy item:"); }
                   foreach (Item item in trade.Items)
                   {
                     if (trade.Sender != item.Owner)
                     { Console.WriteLine($"• {item.Name} - {item.Description} "); }
                   }
 
-                  Console.WriteLine($"\n{trade.Sender.Name}'s items:");
+                  Console.WriteLine($"\n{trade.Sender.Name}'s item:");
                   foreach (Item item in trade.Items)
                   {
                     if (trade.Receiver == u && item.Owner != u)
