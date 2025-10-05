@@ -78,4 +78,22 @@ abstract class Functionality
     }
     return randomAlphaNumeric;
   }
+
+  public static void UpdateTradeStatus(string tradeId, TradeStatus newStatus)
+  {
+    string[] tradeLines = File.ReadAllLines("Trades.csv");
+
+    for (int i = 0; i < tradeLines.Length; i++)
+    {
+      string[] splitTradeLines = tradeLines[i].Split(",");
+
+      if (splitTradeLines[0] == tradeId)
+      {
+        splitTradeLines[3] = newStatus.ToString();
+        tradeLines[i] = string.Join(",", splitTradeLines);
+        break;
+      }
+    }
+    File.WriteAllLines("Trades.csv", tradeLines);
+  }
 }

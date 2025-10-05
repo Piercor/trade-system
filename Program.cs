@@ -390,11 +390,13 @@ while (isRunning)
                 {
                   case "y":
                     selectedTrade.Status = TradeStatus.Accepted;
+                    Functionality.UpdateTradeStatus(selectedTrade.TradeID, TradeStatus.Accepted);
                     Functionality.PrintMessage($"Trade with {selectedTrade.Sender.Name} accepted", "", "prev");
                     break;
 
                   case "n":
                     selectedTrade.Status = TradeStatus.Denied;
+                    Functionality.UpdateTradeStatus(selectedTrade.TradeID, TradeStatus.Denied);
                     Functionality.PrintMessage($"Trade with {selectedTrade.Sender.Name} denied", "", "prev");
                     break;
                 }
