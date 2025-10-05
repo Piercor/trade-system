@@ -394,6 +394,19 @@ while (isRunning)
                 switch (Console.ReadLine().ToLower())
                 {
                   case "y":
+
+                    foreach (Item item in selectedTrade.Items)
+                    {
+                      if (selectedTrade.Items.IndexOf(item) == 0 && item.Owner == selectedTrade.Receiver)
+                      {
+                        item.Owner = selectedTrade.Sender;
+                      }
+                      if (selectedTrade.Items.IndexOf(item) == 1 && item.Owner == selectedTrade.Sender)
+                      {
+                        item.Owner = selectedTrade.Receiver;
+                      }
+                    }
+
                     selectedTrade.Status = TradeStatus.Accepted;
                     Functionality.UpdateTradeStatus(selectedTrade.TradeID, TradeStatus.Accepted);
                     Functionality.PrintMessage($"Trade with {selectedTrade.Sender.Name} accepted", "", "prev");
