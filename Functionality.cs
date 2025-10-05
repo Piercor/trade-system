@@ -96,4 +96,21 @@ abstract class Functionality
     }
     File.WriteAllLines("Trades.csv", tradeLines);
   }
+
+  public static void UpdateItemOwner(string itemName, string itemDescription, string oldOwnerEmail, string newOwnerEmail)
+  {
+    string[] itemLines = File.ReadAllLines("Items.csv");
+
+    for (int i = 0; i < itemLines.Length; i++)
+    {
+      string[] splitItemLines = itemLines[i].Split(";");
+
+      if (splitItemLines[0] == itemName && splitItemLines[1] == itemDescription && splitItemLines[2] == oldOwnerEmail)
+      {
+        splitItemLines[2] = newOwnerEmail;
+        itemLines[i] = string.Join(";", splitItemLines);
+      }
+    }
+    File.WriteAllLines("Items.csv", itemLines);
+  }
 }

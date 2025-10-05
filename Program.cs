@@ -399,10 +399,12 @@ while (isRunning)
                     {
                       if (selectedTrade.Items.IndexOf(item) == 0 && item.Owner == selectedTrade.Receiver)
                       {
+                        Functionality.UpdateItemOwner(item.Name, item.Description, item.Owner.Email, selectedTrade.Sender.Email);
                         item.Owner = selectedTrade.Sender;
                       }
                       if (selectedTrade.Items.IndexOf(item) == 1 && item.Owner == selectedTrade.Sender)
                       {
+                        Functionality.UpdateItemOwner(item.Name, item.Description, item.Owner.Email, selectedTrade.Receiver.Email);
                         item.Owner = selectedTrade.Receiver;
                       }
                     }
