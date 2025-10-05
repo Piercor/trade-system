@@ -39,6 +39,8 @@ foreach (string tradeData in tradesCsv)
   User? tradeReceiver = null;
   TradeStatus tradeStatus = TradeStatus.Pending;
   List<Item> tradeList = new List<Item>();
+  Item? firstItem = null;
+  Item? secondItem = null;
 
   string[] tradeSplitData = tradeData.Split(",");
 
@@ -69,13 +71,16 @@ foreach (string tradeData in tradesCsv)
   {
     if (item.Owner.Email == tradeSplitData[4] && item.Name == tradeSplitData[5])
     {
-      tradeList.Add(item);
+      firstItem = item;
     }
     if (item.Owner.Email == tradeSplitData[6] && item.Name == tradeSplitData[7])
     {
-      tradeList.Add(item);
+      secondItem = item;
     }
   }
+  tradeList.Add(firstItem);
+  if (secondItem != null) { tradeList.Add(secondItem); }
+
   userTrades.Add(new Trade(tradeSplitData[0], tradeSender, tradeReceiver, tradeStatus, tradeList));
 }
 
