@@ -44,20 +44,20 @@ foreach (string tradeData in tradesCsv)
 
   foreach (User user in users)
   {
-    if (user.Email == tradeSplitData[0])
+    if (user.Email == tradeSplitData[1])
     {
       tradeSender = user;
     }
-    if (user.Email == tradeSplitData[1])
+    if (user.Email == tradeSplitData[2])
     {
       tradeReceiver = user;
     }
   }
-  if (tradeSplitData[2] == "Pending")
+  if (tradeSplitData[3] == "Pending")
   {
     tradeStatus = TradeStatus.Pending;
   }
-  else if (tradeSplitData[2] == "Accepted")
+  else if (tradeSplitData[3] == "Accepted")
   {
     tradeStatus = TradeStatus.Accepted;
   }
@@ -67,17 +67,16 @@ foreach (string tradeData in tradesCsv)
   }
   foreach (Item item in userItems)
   {
-    if (item.Owner.Email == tradeSplitData[3] && item.Name == tradeSplitData[4])
+    if (item.Owner.Email == tradeSplitData[4] && item.Name == tradeSplitData[5])
     {
       tradeList.Add(item);
     }
-    if (item.Owner.Email == tradeSplitData[5] && item.Name == tradeSplitData[6])
+    if (item.Owner.Email == tradeSplitData[6] && item.Name == tradeSplitData[7])
     {
       tradeList.Add(item);
-
     }
   }
-  userTrades.Add(new Trade(tradeSender, tradeReceiver, tradeStatus, tradeList));
+  userTrades.Add(new Trade(tradeSplitData[0], tradeSender, tradeReceiver, tradeStatus, tradeList));
 }
 
 
@@ -588,13 +587,13 @@ while (isRunning)
                             {
                               if (myItemIndex == userItems.IndexOf(item) + 1)
                               {
+                                string tradeID = Functionality.RandomTradeId();
+
                                 tradeItems.Add(item);
-                                userTrades.Add(new Trade(activeUser, choosedTradeUser, TradeStatus.Pending, tradeItems));
+                                userTrades.Add(new Trade(tradeID, activeUser, choosedTradeUser, TradeStatus.Pending, tradeItems));
 
-
-                                string myItemLine = myItemLine = $"{u.Email},{item.Name}";
-
-                                string tradeLine = $"{activeUser.Email},{choosedTradeUser.Email},{TradeStatus.Pending},";
+                                string myItemLine = myItemLine = $"{u.Email},{item.Name},";
+                                string tradeLine = $"{tradeID},{activeUser.Email},{choosedTradeUser.Email},{TradeStatus.Pending},";
                                 File.AppendAllText("Trades.csv", tradeLine + theirItemLine + myItemLine + Environment.NewLine);
                                 break;
                               }
@@ -608,10 +607,11 @@ while (isRunning)
                       break;
 
                     case "n":
+                      string newTradeID = Functionality.RandomTradeId();
 
-                      userTrades.Add(new Trade(activeUser, choosedTradeUser, TradeStatus.Pending, tradeItems));
+                      userTrades.Add(new Trade(newTradeID, activeUser, choosedTradeUser, TradeStatus.Pending, tradeItems));
 
-                      string newTradeLine = $"{activeUser.Email},{choosedTradeUser.Email},{TradeStatus.Pending},";
+                      string newTradeLine = $"{newTradeID},{activeUser.Email},{choosedTradeUser.Email},{TradeStatus.Pending},";
                       File.AppendAllText("Trades.csv", newTradeLine + theirItemLine + Environment.NewLine);
                       break;
 

@@ -62,4 +62,20 @@ abstract class Functionality
     }
     Console.ReadLine();
   }
+
+  public static string RandomTradeId()
+  {
+    Random rnd = new Random();
+
+    string alphaNumeric = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+    string randomAlphaNumeric = "";
+
+    for (int i = 0; i < 6; i++)
+    {
+      int x = rnd.Next(alphaNumeric.Length);
+      randomAlphaNumeric = randomAlphaNumeric + alphaNumeric[x];
+    }
+    return randomAlphaNumeric;
+  }
 }
