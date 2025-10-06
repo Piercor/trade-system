@@ -115,11 +115,15 @@ foreach (string tradeData in tradesCsv)
     }
   }
 
+  Debug.Assert(firstItem != null);
+
   // After the items loop, the first item is added to the tradeList object...
   tradeList.Add(firstItem);
 
   //... and if a Sender item exist (if secondItem is not null), is added as well.
   if (secondItem != null) { tradeList.Add(secondItem); }
+
+  Debug.Assert(tradeSender != null); Debug.Assert(tradeReceiver != null);
 
   // And here all the parts of the trade are added to form the trade and to add it to the userTrades list.
   userTrades.Add(new Trade(tradeSplitData[0], tradeSender, tradeReceiver, tradeStatus, tradeList));
@@ -515,7 +519,7 @@ while (isRunning)
 
                 // Now can the receiver of the trade either accept or deny the trade.
                 Console.Write($"\nDo you want to accept the trade with {selectedTrade.Sender.Name}? [Y/N]: ");
-                switch (Console.ReadLine().ToLower())
+                switch (Console.ReadLine()?.ToLower())
                 {
                   // If trade is accepted:
                   case "y":
@@ -551,6 +555,10 @@ while (isRunning)
                     //... and in the "Trades.csv" file.
                     Functionality.UpdateTradeStatus(selectedTrade.TradeID, TradeStatus.Denied);
                     Functionality.PrintMessage($"Trade with {selectedTrade.Sender.Name} denied", "", "prev");
+                    break;
+
+                  default:
+                    Functionality.PrintMessage("", "inv", "prev");
                     break;
                 }
 
@@ -815,7 +823,7 @@ while (isRunning)
                   }
 
                   Console.Write("\nDo you want to do another trade? [Y/N]: ");
-                  switch (Console.ReadLine().ToLower())
+                  switch (Console.ReadLine()?.ToLower())
                   {
                     // Here can the user choose to start another trade directly...
                     case "y":
