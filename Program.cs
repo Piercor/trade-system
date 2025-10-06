@@ -916,23 +916,23 @@ while (isRunning)
                   // Then the receiver of the trade...
                   Console.WriteLine($"\nTrade with {trade.Receiver.Name}");
 
-                  { Console.WriteLine($"\n{trade.Receiver.Name}'s item:"); }
-                  foreach (Item item in trade.Items)
+                  //... their item...
+                  Console.WriteLine($"\n{trade.Receiver.Name}'s item:");
+                  Console.WriteLine($"• {trade.Items[0].Name} - {trade.Items[0].Description} ");
+
+                  //... and lastly active user's item (if any).                  
+                  // Here the program checks if the list of items of the trade have more than one item, and if so, shows it.
+                  if (trade.Items.Count > 1)
                   {
-                    if (trade.Receiver == item.Owner)
-                    //... their item...
-                    { Console.WriteLine($"• {item.Name} - {item.Description} "); }
+                    Console.WriteLine($"\nmy item:");
+                    Console.WriteLine($"• {trade.Items[1].Name} - {trade.Items[1].Description}");
+                  }
+                  // Otherwise a "no items" message would be shown.
+                  else
+                  {
+                    Console.WriteLine("\nYou have offered none of your items for this trade.");
                   }
 
-                  Console.WriteLine($"\nmy item:");
-                  foreach (Item item in trade.Items)
-                  {
-                    if (trade.Sender == u && item.Owner == u)
-                    {
-                      //... and lastly active user's item.
-                      Console.WriteLine($"• {item.Name} - {item.Description}");
-                    }
-                  }
                   Console.WriteLine($"\nStatus: {trade.Status.ToString()}");
                   Console.WriteLine("\n------------------------------");
                   // Since a trade history was found, the foundSentTrade boolean is now true.
@@ -964,19 +964,17 @@ while (isRunning)
                   Console.WriteLine($"\nTrade with {trade.Sender.Name}");
 
                   { Console.WriteLine($"\nMy item:"); }
-                  foreach (Item item in trade.Items)
-                  {
-                    if (trade.Sender != item.Owner)
-                    { Console.WriteLine($"• {item.Name} - {item.Description} "); }
-                  }
 
-                  Console.WriteLine($"\n{trade.Sender.Name}'s item:");
-                  foreach (Item item in trade.Items)
+                  Console.WriteLine($"• {trade.Items[0].Name} - {trade.Items[0].Description} ");
+
+                  if (trade.Items.Count > 1)
                   {
-                    if (trade.Receiver == u && item.Owner != u)
-                    {
-                      Console.WriteLine($"• {item.Name} - {item.Description}");
-                    }
+                    Console.WriteLine($"\n{trade.Sender.Name}'s item:");
+                    Console.WriteLine($"• {trade.Items[1].Name} - {trade.Items[1].Description}");
+                  }
+                  else
+                  {
+                    Console.WriteLine($"\n{trade.Sender.Name} have offered none of their items for this trade.");
                   }
                   Console.WriteLine($"\nStatus: {trade.Status.ToString()}");
                   Console.WriteLine("\n------------------------------");
