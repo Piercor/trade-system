@@ -887,7 +887,6 @@ while (isRunning)
             currentMenu = Menu.Main; break;
 
           default: Functionality.PrintMessage("", "inv", "cont"); break;
-
         }
         break;
 
