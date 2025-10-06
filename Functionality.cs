@@ -3,7 +3,7 @@ using System.Data;
 
 namespace App;
 
-abstract class Functionality
+class Functionality
 {
   public static void TopMenu(string menuTitle)
   {
@@ -63,7 +63,7 @@ abstract class Functionality
     Console.ReadLine();
   }
 
-  public static string RandomTradeId()
+  public static string RandomIdGenerator()
   {
     Random rnd = new Random();
 
