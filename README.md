@@ -2,26 +2,36 @@ The Trader's Peninsula
 
 Console based program that handles trades between users.
 
-When starting the program, the user is presented with logging in, creating a new account or quitting the program.
+----------------------------------------------------------------------------------------------------------------------------
+
+When starting the program, the user is presented with menu containing: "Log in", "Create a new account" or "Quit".
 
 • Log in: the user enters their email and password to access the program. If the email or password isn’t correct, a warning message is shown. After log in the users access the main user menu.
 
 • Account creation: the user can write their name, an email with confirmation check, and a password, with same check as     email.
 Other checks in place when creating an account are that the email is not being already used and that the password is not the same as the name or email of the user.
 
+
 Main user menu
 
-Here is the user presented with four menu options: My items, See the market, Trade history, and Log out.
+Here is the user presented with four menu options: "My items", "See the market", "Trade history", and "Log out".
 
 • My items: here is the user presented with a submenu containing: "See my items", "Received trade requests", and "Back to previous menu (BtPM from now on)".
+
 See my items: here can the user see the items they possess and add new ones. When adding a new item, the user is asked to give it a name and a description.
+
 Received trade requests: Here the user can see other users trade requests and manage (accept/deny) them. If a trade request is accepted, the items in them would change owner (sender of the request gets the receiver's item and they get the sender’s, if any).
 
+
 • See the market: here is the user presented with 3 menu options, "See other people's items", "My trade requests" and "BtPM".
+
 See other people's items: here the user can see all the items other users have and make trade requests for them. When making a trade request, the user can choose one of their items in exchange.
+
 My trade requests: here can the user see the pending trade requests they sent and the items involved.
 
 • Trade history: here can the user see all the trades they sent or received, and what was the outcome (accepted/denied).
+
+----------------------------------------------------------------------------------------------------------------------------
 
 
 Code discussion:
