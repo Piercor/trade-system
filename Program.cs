@@ -854,24 +854,25 @@ while (isRunning)
               //... and then check if the sender of the trade is the active user ("u")
               if (trade.Sender == u)
               {
-                // Here shows the name of the receiver of the trade request...
-                Console.WriteLine($"\nTrade with {trade.Receiver.Name}");
-
-                { Console.WriteLine($"\n{trade.Receiver.Name}'s items:"); }
-                foreach (Item item in trade.Items)
+                if (trade.Status == TradeStatus.Pending)
                 {
-                  if (trade.Receiver == item.Owner)
+                  // Here shows the name of the receiver of the trade request...
+                  Console.WriteLine($"\nTrade with {trade.Receiver.Name}");
+
+                  Console.WriteLine($"\n{trade.Receiver.Name}'s item:");
+
                   //... and their item.
-                  { Console.WriteLine($"• {item.Name} - {item.Description} "); }
-                }
+                  Console.WriteLine($"• {trade.Items[0].Name} - {trade.Items[0].Description} ");
 
-                Console.WriteLine($"\nmy items:");
-                foreach (Item item in trade.Items)
-                {
-                  if (trade.Sender == u && item.Owner == u)
+                  // And then the active user item (if any).
+                  if (trade.Items.Count > 1)
                   {
-                    // And then the active user item.
-                    Console.WriteLine($"• {item.Name} - {item.Description}");
+                    Console.WriteLine($"\nmy item:");
+                    Console.WriteLine($"• {trade.Items[1].Name} - {trade.Items[1].Description}");
+                  }
+                  else
+                  {
+                    Console.WriteLine("\nYou haven't offered any items for this trade.");
                   }
                 }
               }
