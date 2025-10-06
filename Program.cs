@@ -38,7 +38,7 @@ foreach (string itemData in itemsCsv)
     if (user.Email == itemSplitData[2])
     {
       //... adds the item to the userItems list
-      userItems.Add(new Item(itemSplitData[0], itemSplitData[1], user));
+      userItems.Add(new Item(itemSplitData[0], itemSplitData[1], user, itemSplitData[3]));
       break;
     }
   }
@@ -102,13 +102,13 @@ foreach (string tradeData in tradesCsv)
   foreach (Item item in userItems)
   {
     // If the item owner email is the same as index 4, and the item name is the same as index 5...
-    if (item.Owner.Email == tradeSplitData[4] && item.Name == tradeSplitData[5])
+    if (item.itemID == tradeSplitData[4] && item.Name == tradeSplitData[5])
     {
       //... the first item (the trade receiver item), is temporaly stored as the firstItem object.
       firstItem = item;
     }
     // Same as before, but to check the items of the Sender...
-    if (item.Owner.Email == tradeSplitData[6] && item.Name == tradeSplitData[7])
+    if (item.itemID == tradeSplitData[6] && item.Name == tradeSplitData[7])
     {
       //... which is stored as secondItem
       secondItem = item;
@@ -394,10 +394,11 @@ while (isRunning)
                     Debug.Assert(newItemName != null);
                     Debug.Assert(newItemDescription != null);
 
+                    string newItemID = Functionality.RandomIdGenerator();
                     // Here is the new item Name, Description and Owner added to the userItems list.
-                    userItems.Add(new Item(newItemName, newItemDescription, u));
+                    userItems.Add(new Item(newItemName, newItemDescription, u, newItemID));
                     // String to write in the "Items.csv" file...
-                    string newItemLine = $"{newItemName};{newItemDescription};{u.Email}";
+                    string newItemLine = $"{newItemName};{newItemDescription};{u.Email};{newItemID}";
                     //... and that line being appended to the file.
                     File.AppendAllText("Items.csv", newItemLine + Environment.NewLine);
                     Functionality.PrintMessage($"New item '{newItemName}' sucessfully added", "", "prev");
@@ -738,7 +739,7 @@ while (isRunning)
                           //... the item is added to the list of items of this trade (tradeItems).
                           tradeItems.Add(item);
                           // Here fills "theirItemLine" string with item's info.
-                          theirItemLine = $"{item.Owner.Email},{item.Name},";
+                          theirItemLine = $"{item.itemID},{item.Name},";
                           break;
                         }
                       }
@@ -781,7 +782,7 @@ while (isRunning)
                               if (myItemIndex == userItems.IndexOf(item) + 1)
                               {
                                 //... a trade ID is created...
-                                string tradeID = Functionality.RandomTradeId();
+                                string tradeID = Functionality.RandomIdGenerator();
 
                                 //... the active user item is added to the list of items of the trade...
                                 tradeItems.Add(item);
@@ -789,7 +790,7 @@ while (isRunning)
                                 userTrades.Add(new Trade(tradeID, activeUser, choosedTradeUser, TradeStatus.Pending, tradeItems));
 
                                 // A new string is created with the info of the active user item...
-                                string myItemLine = $"{u.Email},{item.Name},";
+                                string myItemLine = $"{item.itemID},{item.Name},";
                                 //... as well as a string with the info of the trade...
                                 string tradeLine = $"{tradeID},{activeUser.Email},{choosedTradeUser.Email},{TradeStatus.Pending},";
                                 //... to be added to the "Trades.csv" file.
@@ -809,7 +810,7 @@ while (isRunning)
                     case "n":
 
                       // As before, a random trade ID is created...
-                      string newTradeID = Functionality.RandomTradeId();
+                      string newTradeID = Functionality.RandomIdGenerator();
                       //... the trade is added to the userTrades list...
                       userTrades.Add(new Trade(newTradeID, activeUser, choosedTradeUser, TradeStatus.Pending, tradeItems));
                       //... a string with the info of the trade is created...

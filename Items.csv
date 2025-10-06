@@ -1,12 +1,12 @@
-Pants;Good condition;t@1
-Shirt;Needs love;t@1
-Dress;Like new;a@1
-Book: The Alchemist;Worn cover, all pages intact;a@1
-Wireless Mouse;Good condition;b@2
-Yoga Mat;Used, but clean;c@3
-Blouse;Needs stitching;c@3
-Bluetooth Speaker;Loud and clear;c@3
-Board Game: Catan;All pieces included;d@4
-Wrist Watch;Battery needs replacement;d@4
-Backpack;Zipper broken;e@5
-Book: 1984;Great condition;f@6
+Pants;Good condition;t@1;aaa000
+Shirt;Needs love;t@1;bbb111
+Dress;Like new;a@1;ccc222
+Book: The Alchemist;Worn cover, all pages intact;a@1;ddd333
+Wireless Mouse;Good condition;b@2;eee444
+Yoga Mat;Used, but clean;c@3;fff555
+Blouse;Needs stitching;c@3;ggg666
+Bluetooth Speaker;Loud and clear;c@3;hhh777
+Board Game: Catan;All pieces included;d@4;iii888
+Wrist Watch;Battery needs replacement;d@4;jjj999
+Backpack;Zipper broken;e@5;kkk001
+Book: 1984;Great condition;f@6;lll002
